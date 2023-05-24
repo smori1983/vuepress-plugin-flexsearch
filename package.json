@@ -6,6 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "dependencies": {
+    "flexsearch": "^0.7.31"
+  },
   "devDependencies": {
     "http-server": "^14.1.1",
     "vuepress": "^1.9.9",
