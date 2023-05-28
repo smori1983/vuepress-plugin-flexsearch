@@ -13,7 +13,7 @@ const path = require('path');
 module.exports = (options, ctx) => {
   return {
     alias: {
-      '@SearchBox': path.resolve(__dirname, 'components', 'SearchBox.vue'),
+      '@SearchBox': path.resolve(__dirname, 'components', 'SearchBoxDefault.vue'),
     },
   };
 };
