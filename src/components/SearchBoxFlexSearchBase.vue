@@ -182,7 +182,13 @@ export default {
       if (!this.showSuggestions) {
         return
       }
-      this.$router.push(this.suggestions[i].path)
+
+      const path = this.suggestions[i].path
+
+      if (this.$route.path !== path) {
+        this.$router.push(path)
+      }
+
       this.query = ''
       this.focusIndex = 0
     },
