@@ -46,14 +46,19 @@
 </template>
 
 <script>
-import matchQuery from './match-query'
+import { Document } from 'flexsearch'
 
 /* global SEARCH_MAX_SUGGESTIONS, SEARCH_PATHS, SEARCH_HOTKEYS */
 export default {
-  name: 'SearchBox',
+  name: 'SearchBoxFlexSearchBase',
 
   data () {
     return {
+      /**
+       * @type {Document[]}
+       */
+      documents: [],
+
       query: '',
       focused: false,
       focusIndex: 0,
@@ -80,34 +85,40 @@ export default {
       const max = this.$site.themeConfig.searchMaxSuggestions || SEARCH_MAX_SUGGESTIONS
       const localePath = this.$localePath
       const res = []
-      for (let i = 0; i < pages.length; i++) {
-        if (res.length >= max) break
-        const p = pages[i]
+
+      const matchedKeys = new Set()
+      this.documents.forEach((document) => {
+        const searchResult = document.search(query, {
+          limit: max,
+        })
+
+        searchResult.forEach((fieldResult) => {
+          fieldResult.result.forEach((key) => {
+            matchedKeys.add(key)
+          })
+        })
+      })
+
+      Array.from(matchedKeys).forEach((key) => {
+        const page = this.findPage(key)
+
+        if (page === null) {
+          return
+        }
+
         // filter out results that do not match current locale
-        if (this.getPageLocalePath(p) !== localePath) {
-          continue
+        if (this.getPageLocalePath(page) !== localePath) {
+          return
         }
 
         // filter out results that do not match searchable paths
-        if (!this.isSearchable(p)) {
-          continue
+        if (!this.isSearchable(page)) {
+          return
         }
 
-        if (matchQuery(query, p)) {
-          res.push(p)
-        } else if (p.headers) {
-          for (let j = 0; j < p.headers.length; j++) {
-            if (res.length >= max) break
-            const h = p.headers[j]
-            if (h.title && matchQuery(query, p, h.title)) {
-              res.push(Object.assign({}, p, {
-                path: p.path + '#' + h.slug,
-                header: h
-              }))
-            }
-          }
-        }
-      }
+        res.push(page)
+      })
+
       return res
     },
 
@@ -122,6 +133,15 @@ export default {
   mounted () {
     this.placeholder = this.$site.themeConfig.searchPlaceholder || ''
     document.addEventListener('keydown', this.onHotkey)
+
+    const { pages } = this.$site
+
+    this.setUpDocuments()
+    this.documents.forEach((document) => {
+      pages.forEach((page) => {
+        document.add(page)
+      })
+    })
   },
 
   beforeDestroy () {
@@ -129,6 +149,29 @@ export default {
   },
 
   methods: {
+    setUpDocuments() {
+      this.documents = [
+        new Document({
+          id: 'key',
+          index: [
+            'content',
+          ],
+        })
+      ]
+    },
+
+    findPage(key) {
+      const { pages } = this.$site
+
+      for (let i = 0, len = pages.length; i < len; i++) {
+        if (pages[i].key === key) {
+          return pages[i]
+        }
+      }
+
+      return null
+    },
+
     getPageLocalePath (page) {
       for (const localePath in this.$site.locales || {}) {
         if (localePath !== '/' && page.path.indexOf(localePath) === 0) {
