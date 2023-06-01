@@ -35,10 +35,6 @@
           @click.prevent
         >
           <span class="page-title">{{ s.title || s.path }}</span>
-          <span
-            v-if="s.header"
-            class="header"
-          >&gt; {{ s.header.title }}</span>
         </a>
       </li>
     </ul>
@@ -291,9 +287,6 @@ export default {
       color lighten($textColor, 35%)
       .page-title
         font-weight 600
-      .header
-        font-size 0.9em
-        margin-left 0.25em
     &.focused
       background-color #f3f4f5
       a
