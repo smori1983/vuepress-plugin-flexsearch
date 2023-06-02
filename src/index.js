@@ -16,7 +16,7 @@ module.exports = (options, ctx) => {
       page.content = page._strippedContent;
     },
     alias: {
-      '@SearchBox': path.resolve(__dirname, 'components', 'SearchBoxDefault.vue'),
+      '@SearchBox': path.resolve(__dirname, 'components', 'SearchBoxFlexSearchBase.vue'),
     },
   };
 };
