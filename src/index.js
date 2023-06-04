@@ -14,9 +14,6 @@ const flexSearchData = {};
  */
 module.exports = (options, ctx) => {
   return {
-    extendPageData(page) {
-      page.content = page._strippedContent;
-    },
     alias: {
       '@SearchBox': path.resolve(__dirname, 'components', 'SearchBoxFlexSearchBase.vue'),
     },
