@@ -15,6 +15,9 @@ const flexSearchData = {};
  */
 module.exports = (options, ctx) => {
   return {
+    enhanceAppFiles: [
+      path.resolve(__dirname, 'enhanceAppFile.js'),
+    ],
     alias: {
       '@SearchBox': path.resolve(__dirname, 'components', 'SearchBoxFlexSearchBase.vue'),
     },
