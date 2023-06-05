@@ -132,6 +132,7 @@ export default {
   methods: {
     setUpFlexSearchDocument() {
       this.doc = new Document({
+        tokenize: 'forward',
         id: 'key',
         index: [
           'content',
