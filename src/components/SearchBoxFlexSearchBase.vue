@@ -52,9 +52,9 @@ export default {
   data () {
     return {
       /**
-       * @type {Document[]}
+       * @type {Document}
        */
-      documents: [],
+      doc: undefined,
 
       query: '',
       focused: false,
@@ -82,20 +82,12 @@ export default {
       const localePath = this.$localePath
       const res = []
 
-      const matchedKeys = new Set()
-      this.documents.forEach((document) => {
-        const searchResult = document.search(query, {
-          limit: max,
-        })
-
-        searchResult.forEach((fieldResult) => {
-          fieldResult.result.forEach((key) => {
-            matchedKeys.add(key)
-          })
-        })
+      const matchedKeys = this.doc.search(query, {
+        pluck: 'content',
+        limit: max,
       })
 
-      Array.from(matchedKeys).forEach((key) => {
+      matchedKeys.forEach((key) => {
         const page = this.findPage(key)
 
         if (page === null) {
@@ -130,15 +122,7 @@ export default {
     this.placeholder = this.$site.themeConfig.searchPlaceholder || ''
     document.addEventListener('keydown', this.onHotkey)
 
-    this.setUpDocuments()
-    this.documents.forEach((document) => {
-      for (const key in data) {
-        document.add({
-          key: key,
-          content: data[key].content,
-        })
-      }
-    })
+    this.setUpFlexSearchDocument()
   },
 
   beforeDestroy () {
@@ -146,15 +130,20 @@ export default {
   },
 
   methods: {
-    setUpDocuments() {
-      this.documents = [
-        new Document({
-          id: 'key',
-          index: [
-            'content',
-          ],
+    setUpFlexSearchDocument() {
+      this.doc = new Document({
+        id: 'key',
+        index: [
+          'content',
+        ],
+      })
+
+      for (const key in data) {
+        this.doc.add({
+          key: key,
+          content: data[key].content,
         })
-      ]
+      }
     },
 
     findPage(key) {
