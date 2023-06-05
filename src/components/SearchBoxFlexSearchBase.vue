@@ -43,6 +43,7 @@
 
 <script>
 import { Document } from 'flexsearch'
+import data from '@dynamic/vuepress-plugin-flexsearch/data'
 
 /* global SEARCH_MAX_SUGGESTIONS, SEARCH_PATHS, SEARCH_HOTKEYS */
 export default {
@@ -77,7 +78,6 @@ export default {
         return
       }
 
-      const { pages } = this.$site
       const max = this.$site.themeConfig.searchMaxSuggestions || SEARCH_MAX_SUGGESTIONS
       const localePath = this.$localePath
       const res = []
@@ -130,13 +130,14 @@ export default {
     this.placeholder = this.$site.themeConfig.searchPlaceholder || ''
     document.addEventListener('keydown', this.onHotkey)
 
-    const { pages } = this.$site
-
     this.setUpDocuments()
     this.documents.forEach((document) => {
-      pages.forEach((page) => {
-        document.add(page)
-      })
+      for (const key in data) {
+        document.add({
+          key: key,
+          content: data[key].content,
+        })
+      }
     })
   },
 
