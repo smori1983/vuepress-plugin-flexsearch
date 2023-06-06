@@ -76,7 +76,8 @@ export default {
 
     suggestions () {
       const query = this.query.trim().toLowerCase()
-      if (!query) {
+
+      if (query.length === 0) {
         return
       }
 
@@ -174,7 +175,9 @@ export default {
       let searchPaths = FLEX_SEARCH_PATHS
 
       // all paths searchables
-      if (searchPaths === null) { return true }
+      if (searchPaths === null) {
+        return true
+      }
 
       searchPaths = Array.isArray(searchPaths) ? searchPaths : new Array(searchPaths)
 
