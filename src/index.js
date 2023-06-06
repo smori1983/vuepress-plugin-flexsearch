@@ -16,11 +16,13 @@ const flexSearchData = {};
 module.exports = (options, ctx) => {
   const {
     searchHotKeys = ['s', '/'],
+    searchMaxSuggestions = 5,
   } = options;
 
   return {
     define: {
       SEARCH_HOTKEYS: searchHotKeys,
+      SEARCH_MAX_SUGGESTIONS: searchMaxSuggestions,
     },
 
     alias: {
