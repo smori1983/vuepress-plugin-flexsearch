@@ -22,9 +22,9 @@ module.exports = (options, ctx) => {
 
   return {
     define: {
-      SEARCH_HOTKEYS: searchHotKeys,
-      SEARCH_MAX_SUGGESTIONS: searchMaxSuggestions,
-      SEARCH_PATHS: searchPaths,
+      FLEX_SEARCH_HOTKEYS: searchHotKeys,
+      FLEX_SEARCH_MAX_SUGGESTIONS: searchMaxSuggestions,
+      FLEX_SEARCH_PATHS: searchPaths,
     },
 
     alias: {

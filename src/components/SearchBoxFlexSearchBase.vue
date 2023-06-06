@@ -45,7 +45,7 @@
 import { Document } from 'flexsearch'
 import data from '@dynamic/vuepress-plugin-flexsearch/data'
 
-/* global SEARCH_MAX_SUGGESTIONS, SEARCH_PATHS, SEARCH_HOTKEYS */
+/* global FLEX_SEARCH_MAX_SUGGESTIONS, FLEX_SEARCH_PATHS, FLEX_SEARCH_HOTKEYS */
 export default {
   name: 'SearchBoxFlexSearchBase',
 
@@ -78,7 +78,7 @@ export default {
         return
       }
 
-      const max = this.$site.themeConfig.searchMaxSuggestions || SEARCH_MAX_SUGGESTIONS
+      const max = this.$site.themeConfig.searchMaxSuggestions || FLEX_SEARCH_MAX_SUGGESTIONS
       const localePath = this.$localePath
       const res = []
 
@@ -169,7 +169,7 @@ export default {
     },
 
     isSearchable (page) {
-      let searchPaths = SEARCH_PATHS
+      let searchPaths = FLEX_SEARCH_PATHS
 
       // all paths searchables
       if (searchPaths === null) { return true }
@@ -182,7 +182,7 @@ export default {
     },
 
     onHotkey (event) {
-      if (event.srcElement === document.body && SEARCH_HOTKEYS.includes(event.key)) {
+      if (event.srcElement === document.body && FLEX_SEARCH_HOTKEYS.includes(event.key)) {
         this.$refs.input.focus()
         event.preventDefault()
       }
