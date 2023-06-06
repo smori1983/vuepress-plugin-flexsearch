@@ -17,12 +17,14 @@ module.exports = (options, ctx) => {
   const {
     searchHotKeys = ['s', '/'],
     searchMaxSuggestions = 5,
+    searchPaths = null,
   } = options;
 
   return {
     define: {
       SEARCH_HOTKEYS: searchHotKeys,
       SEARCH_MAX_SUGGESTIONS: searchMaxSuggestions,
+      SEARCH_PATHS: searchPaths,
     },
 
     alias: {
