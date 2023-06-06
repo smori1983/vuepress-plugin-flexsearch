@@ -14,7 +14,15 @@ const flexSearchData = {};
  * @return {PluginOptionAPI}
  */
 module.exports = (options, ctx) => {
+  const {
+    searchHotKeys = ['s', '/'],
+  } = options;
+
   return {
+    define: {
+      SEARCH_HOTKEYS: searchHotKeys,
+    },
+
     alias: {
       '@SearchBox': path.resolve(__dirname, 'components', 'SearchBoxFlexSearchBase.vue'),
     },
