@@ -14,7 +14,19 @@ const flexSearchData = {};
  * @return {PluginOptionAPI}
  */
 module.exports = (options, ctx) => {
+  const {
+    searchHotKeys = ['s', '/'],
+    searchMaxSuggestions = 5,
+    searchPaths = null,
+  } = options;
+
   return {
+    define: {
+      FLEX_SEARCH_HOTKEYS: searchHotKeys,
+      FLEX_SEARCH_MAX_SUGGESTIONS: searchMaxSuggestions,
+      FLEX_SEARCH_PATHS: searchPaths,
+    },
+
     alias: {
       '@SearchBox': path.resolve(__dirname, 'components', 'SearchBoxFlexSearchBase.vue'),
     },
