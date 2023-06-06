@@ -67,18 +67,14 @@ export default {
 
   computed: {
     showSuggestions () {
-      return (
-        this.focused
-        && this.suggestions
-        && this.suggestions.length
-      )
+      return this.focused && this.suggestions.length > 0
     },
 
     suggestions () {
       const query = this.query.trim().toLowerCase()
 
       if (query.length === 0) {
-        return
+        return []
       }
 
       const max = this.$site.themeConfig.searchMaxSuggestions || FLEX_SEARCH_MAX_SUGGESTIONS
