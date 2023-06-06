@@ -45,7 +45,9 @@
 import { Document } from 'flexsearch'
 import data from '@dynamic/vuepress-plugin-flexsearch/data'
 
-/* global FLEX_SEARCH_MAX_SUGGESTIONS, FLEX_SEARCH_PATHS, FLEX_SEARCH_HOTKEYS */
+/* global FLEX_SEARCH_HOTKEYS */
+/* global FLEX_SEARCH_MAX_SUGGESTIONS */
+/* global FLEX_SEARCH_PATHS */
 export default {
   name: 'SearchBoxFlexSearchBase',
 
