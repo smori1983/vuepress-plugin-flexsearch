@@ -90,11 +90,7 @@ export default {
       const res = []
 
       matchedKeys.forEach((key) => {
-        const page = this.findPage(localePath, key)
-
-        if (page === null) {
-          return
-        }
+        const page = data[localePath][key]
 
         // filter out results that do not match searchable paths
         if (!this.isSearchable(page)) {
@@ -149,10 +145,6 @@ export default {
 
         this.docs.set(locale, doc)
       }
-    },
-
-    findPage(localePath, key) {
-      return data[localePath]?.[key] || null
     },
 
     isSearchable (page) {
