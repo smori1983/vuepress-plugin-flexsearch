@@ -53,10 +53,8 @@ export default {
 
   data () {
     return {
-      /**
-       * @type {Document}
-       */
-      doc: undefined,
+      /** @type {Map<string, Document>} */
+      docs: new Map(),
 
       query: '',
       focused: false,
@@ -79,15 +77,20 @@ export default {
 
       const max = this.$site.themeConfig.searchMaxSuggestions || FLEX_SEARCH_MAX_SUGGESTIONS
       const localePath = this.$localePath
-      const res = []
 
-      const matchedKeys = this.doc.search(query, {
+      if (!this.docs.has(localePath)) {
+        return []
+      }
+
+      const matchedKeys = this.docs.get(localePath).search(query, {
         pluck: 'content',
         limit: max,
       })
 
+      const res = []
+
       matchedKeys.forEach((key) => {
-        const page = this.findPage(key)
+        const page = this.findPage(localePath, key)
 
         if (page === null) {
           return
@@ -130,24 +133,31 @@ export default {
 
   methods: {
     setUpFlexSearchDocument() {
-      this.doc = new Document({
-        tokenize: 'reverse',
-        id: 'key',
-        index: [
-          'content',
-        ],
-      })
-
-      for (const key in data) {
-        this.doc.add({
-          key: key,
-          content: data[key].content,
+      for (const locale in data) {
+        const doc = new Document({
+          tokenize: 'reverse',
+          id: 'key',
+          index: [
+            'content',
+          ],
         })
+
+        // Consider the case locale defined but no pages created.
+        const localeData = data[locale] || {}
+
+        for (const key in localeData) {
+          doc.add({
+            key: key,
+            content: localeData[key].content,
+          })
+        }
+
+        this.docs.set(locale, doc)
       }
     },
 
-    findPage(key) {
-      return data[key] || null;
+    findPage(localePath, key) {
+      return data[localePath]?.[key] || null
     },
 
     getPageLocalePath (page) {

@@ -36,7 +36,24 @@ module.exports = (options, ctx) => {
     ],
 
     async ready() {
+      /** @type {Map<string, Map<string, Object>>} */
+      const localeBasedPageData = new Map([
+        ['/', new Map()],
+      ]);
+
+      for (const localePath in ctx.themeConfig.locales || {}) {
+        if (localePath !== '/') {
+          localeBasedPageData.set(localePath, new Map());
+        }
+      }
+
       for (const page of ctx.pages) {
+        const localePath = page._computed.$localePath;
+
+        if (!localeBasedPageData.has(localePath)) {
+          continue;
+        }
+
         const tokens = await tokenize(page._strippedContent);
         const keywords = [];
 
@@ -48,12 +65,20 @@ module.exports = (options, ctx) => {
           }
         });
 
-        flexSearchData[page.key] = {
+        localeBasedPageData.get(localePath).set(page.key, {
           title: page.title,
           path: page.regularPath,
           content: keywords.join(' '),
-        };
+        });
       }
+
+      localeBasedPageData.forEach((localePages, locale) => {
+        flexSearchData[locale] = {};
+
+        localePages.forEach((pageData, key) => {
+          flexSearchData[locale][key] = pageData;
+        });
+      });
     },
 
     clientDynamicModules() {
