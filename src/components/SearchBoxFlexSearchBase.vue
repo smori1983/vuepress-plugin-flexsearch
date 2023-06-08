@@ -96,11 +96,6 @@ export default {
           return
         }
 
-        // filter out results that do not match current locale
-        if (this.getPageLocalePath(page) !== localePath) {
-          return
-        }
-
         // filter out results that do not match searchable paths
         if (!this.isSearchable(page)) {
           return
@@ -158,15 +153,6 @@ export default {
 
     findPage(localePath, key) {
       return data[localePath]?.[key] || null
-    },
-
-    getPageLocalePath (page) {
-      for (const localePath in this.$site.locales || {}) {
-        if (localePath !== '/' && page.path.indexOf(localePath) === 0) {
-          return localePath
-        }
-      }
-      return '/'
     },
 
     isSearchable (page) {
