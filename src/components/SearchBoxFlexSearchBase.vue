@@ -53,10 +53,8 @@ export default {
 
   data () {
     return {
-      /**
-       * @type {Document}
-       */
-      doc: undefined,
+      /** @type {Map<string, Document>} */
+      docs: new Map(),
 
       query: '',
       focused: false,
@@ -79,24 +77,20 @@ export default {
 
       const max = this.$site.themeConfig.searchMaxSuggestions || FLEX_SEARCH_MAX_SUGGESTIONS
       const localePath = this.$localePath
-      const res = []
 
-      const matchedKeys = this.doc.search(query, {
+      if (!this.docs.has(localePath)) {
+        return []
+      }
+
+      const matchedKeys = this.docs.get(localePath).search(query, {
         pluck: 'content',
         limit: max,
       })
 
+      const res = []
+
       matchedKeys.forEach((key) => {
-        const page = this.findPage(key)
-
-        if (page === null) {
-          return
-        }
-
-        // filter out results that do not match current locale
-        if (this.getPageLocalePath(page) !== localePath) {
-          return
-        }
+        const page = data[localePath][key]
 
         // filter out results that do not match searchable paths
         if (!this.isSearchable(page)) {
@@ -130,33 +124,27 @@ export default {
 
   methods: {
     setUpFlexSearchDocument() {
-      this.doc = new Document({
-        tokenize: 'reverse',
-        id: 'key',
-        index: [
-          'content',
-        ],
-      })
-
-      for (const key in data) {
-        this.doc.add({
-          key: key,
-          content: data[key].content,
+      for (const locale in data) {
+        const doc = new Document({
+          tokenize: 'reverse',
+          id: 'key',
+          index: [
+            'content',
+          ],
         })
-      }
-    },
 
-    findPage(key) {
-      return data[key] || null;
-    },
+        // Consider the case locale defined but no pages created.
+        const localeData = data[locale] || {}
 
-    getPageLocalePath (page) {
-      for (const localePath in this.$site.locales || {}) {
-        if (localePath !== '/' && page.path.indexOf(localePath) === 0) {
-          return localePath
+        for (const key in localeData) {
+          doc.add({
+            key: key,
+            content: localeData[key].content,
+          })
         }
+
+        this.docs.set(locale, doc)
       }
-      return '/'
     },
 
     isSearchable (page) {
