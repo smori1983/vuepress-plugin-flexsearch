@@ -147,15 +147,7 @@ export default {
     },
 
     findPage(key) {
-      const { pages } = this.$site
-
-      for (let i = 0, len = pages.length; i < len; i++) {
-        if (pages[i].key === key) {
-          return pages[i]
-        }
-      }
-
-      return null
+      return data[key] || null;
     },
 
     getPageLocalePath (page) {
