@@ -243,6 +243,7 @@ export default {
     &:focus
       cursor auto
       border-color $accentColor
+      width 15rem
   .suggestions
     background #fff
     width 40rem
