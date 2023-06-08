@@ -48,6 +48,12 @@ module.exports = (options, ctx) => {
       }
 
       for (const page of ctx.pages) {
+        const frontmatter = page._computed.$frontmatter;
+
+        if (frontmatter.search === false) {
+          continue;
+        }
+
         const localePath = page._computed.$localePath;
 
         if (!localeBasedPageData.has(localePath)) {
