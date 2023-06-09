@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "flexsearch": "^0.7.31",
+    "he": "^1.2.0",
     "kuromojin": "^3.0.0"
   },
   "devDependencies": {
