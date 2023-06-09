@@ -74,7 +74,7 @@ module.exports = (options, ctx) => {
         localeBasedPageData.get(localePath).set(page.key, {
           title: page.title,
           path: page.regularPath,
-          content: keywords.join(' '),
+          searchData: keywords.join(' '),
         });
       }
 

@@ -83,7 +83,7 @@ export default {
       }
 
       const matchedKeys = this.docs.get(localePath).search(query, {
-        pluck: 'content',
+        pluck: 'searchData',
         limit: max,
       })
 
@@ -129,7 +129,7 @@ export default {
           tokenize: 'reverse',
           id: 'key',
           index: [
-            'content',
+            'searchData',
           ],
         })
 
@@ -139,7 +139,7 @@ export default {
         for (const key in localeData) {
           doc.add({
             key: key,
-            content: localeData[key].content,
+            searchData: localeData[key].searchData,
           })
         }
 
