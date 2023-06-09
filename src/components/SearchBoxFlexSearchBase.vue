@@ -36,6 +36,8 @@
         >
           <span class="page-title">{{ s.title || s.path }}</span>
         </a>
+
+        <div class="page-excerpt">{{ s.excerpt }}</div>
       </li>
     </ul>
   </div>
@@ -68,8 +70,11 @@ export default {
       return this.focused && this.suggestions.length > 0
     },
 
+    /**
+     * @return {{title: string, path: string, excerpt: string}[]}
+     */
     suggestions () {
-      const query = this.query.trim().toLowerCase()
+      const query = this.query.trim()
 
       if (query.length === 0) {
         return []
@@ -97,7 +102,11 @@ export default {
           return
         }
 
-        res.push(page)
+        res.push({
+          title: page.title,
+          path: page.path,
+          excerpt: this.getExcerpt(page.content, query),
+        })
       })
 
       return res
@@ -145,6 +154,30 @@ export default {
 
         this.docs.set(locale, doc)
       }
+    },
+
+    /**
+     * @param {string} content
+     * @param {string} query
+     * @return {string}
+     */
+    getExcerpt (content, query) {
+      const queries = query.split(/\s+/).map(q => q.toLowerCase())
+
+      for (let i = 0, len = queries.length; i < len; i++) {
+        const position = content.toLowerCase().indexOf(queries[i])
+
+        if (position >= 0) {
+          const from = Math.max(0, position - 50)
+          const to = position + queries[i].length + 50
+          const head = from > 0 ? '... ' : ''
+          const tail = content.length > to ? ' ...' : ''
+
+          return head + content.slice(from, to) + tail
+        }
+      }
+
+      return ''
     },
 
     isSearchable (page) {
@@ -240,7 +273,7 @@ export default {
       border-color $accentColor
   .suggestions
     background #fff
-    width 20rem
+    width 40rem
     position absolute
     top 2 rem
     border 1px solid darken($borderColor, 10%)
@@ -263,6 +296,11 @@ export default {
       background-color #f3f4f5
       a
         color $accentColor
+    .page-excerpt
+      margin 1rem 0 0 1rem
+      font-size 90%
+      white-space normal
+      word-break break-all
 
 @media (max-width: $MQNarrow)
   .search-box
