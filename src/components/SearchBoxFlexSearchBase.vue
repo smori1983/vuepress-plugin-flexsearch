@@ -48,8 +48,8 @@
 
 <script>
 import { Document } from 'flexsearch'
-import { escape } from 'he'
 import data from '@dynamic/vuepress-plugin-flexsearch/data'
+import excerpt from './excerpt'
 
 /* global FLEX_SEARCH_HOTKEYS */
 /* global FLEX_SEARCH_MAX_SUGGESTIONS */
@@ -109,7 +109,7 @@ export default {
         res.push({
           title: page.title,
           path: page.path,
-          excerpt: this.getExcerpt(page.content, query),
+          excerpt: excerpt.create(page.content, query),
         })
       })
 
@@ -158,91 +158,6 @@ export default {
 
         this.docs.set(locale, doc)
       }
-    },
-
-    /**
-     * @param {string} content
-     * @param {string} query
-     * @return {string}
-     */
-    getExcerpt (content, query) {
-      const queries = query.split(/\s+/).map(q => q.toLowerCase())
-
-      for (let i = 0, len = queries.length; i < len; i++) {
-        const position = content.toLowerCase().indexOf(queries[i])
-
-        if (position >= 0) {
-          const from = Math.max(0, position - 50)
-          const to = position + queries[i].length + 50
-          const head = from > 0 ? '... ' : ''
-          const tail = content.length > to ? ' ...' : ''
-
-          return head + this.highlightExcerpt(content.slice(from, to), queries) + tail
-        }
-      }
-
-      return ''
-    },
-
-    /**
-     * @param {string} excerpt
-     * @param {string[]} queries
-     * @return {string}
-     */
-    highlightExcerpt (excerpt, queries) {
-      const excerptLowerCase = excerpt.toLowerCase()
-      const sortedQueries = this.sortQueries(queries)
-      let result = ''
-
-      for (let pos = 0, len = excerpt.length; pos < len; ) {
-        const matchedQuery = this.findMatchedQuery(excerptLowerCase, pos, sortedQueries)
-
-        if (typeof matchedQuery === 'string') {
-          result += '<strong>' + escape(excerpt.slice(pos, pos + matchedQuery.length)) + '</strong>'
-          pos += matchedQuery.length
-        } else {
-          result += escape(excerpt.slice(pos, pos + 1))
-          pos += 1
-        }
-      }
-
-      return result
-    },
-
-    /**
-     * @param {string[]} queries
-     * @return {string[]}
-     */
-    sortQueries (queries) {
-      const uniqueList = Array.from(new Set(queries))
-
-      return uniqueList.sort((a, b) => {
-        if (a.length < b.length) {
-          return 1;
-        }
-
-        if (a.length > b.length) {
-          return -1;
-        }
-
-        return a < b ? -1 : 1;
-      })
-    },
-
-    /**
-     * @param {string} excerpt
-     * @param {number} pos
-     * @param {string[]} queries
-     * @return {(string|null)}
-     */
-    findMatchedQuery (excerpt, pos, queries) {
-      for (let i = 0, len = queries.length; i < len; i++) {
-        if (excerpt.indexOf(queries[i], pos) === pos) {
-          return queries[i]
-        }
-      }
-
-      return null
     },
 
     isSearchable (page) {
