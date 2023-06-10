@@ -37,7 +37,10 @@
           <span class="page-title">{{ s.title || s.path }}</span>
         </a>
 
-        <div class="page-excerpt">{{ s.excerpt }}</div>
+        <div
+          v-html="s.excerpt"
+          class="page-excerpt"
+        ></div>
       </li>
     </ul>
   </div>
@@ -45,6 +48,7 @@
 
 <script>
 import { Document } from 'flexsearch'
+import { escape } from 'he'
 import data from '@dynamic/vuepress-plugin-flexsearch/data'
 
 /* global FLEX_SEARCH_HOTKEYS */
@@ -173,11 +177,72 @@ export default {
           const head = from > 0 ? '... ' : ''
           const tail = content.length > to ? ' ...' : ''
 
-          return head + content.slice(from, to) + tail
+          return head + this.highlightExcerpt(content.slice(from, to), queries) + tail
         }
       }
 
       return ''
+    },
+
+    /**
+     * @param {string} excerpt
+     * @param {string[]} queries
+     * @return {string}
+     */
+    highlightExcerpt (excerpt, queries) {
+      const excerptLowerCase = excerpt.toLowerCase()
+      const sortedQueries = this.sortQueries(queries)
+      let result = ''
+
+      for (let pos = 0, len = excerpt.length; pos < len; ) {
+        const matchedQuery = this.findMatchedQuery(excerptLowerCase, pos, sortedQueries)
+
+        if (typeof matchedQuery === 'string') {
+          result += '<strong>' + escape(excerpt.slice(pos, pos + matchedQuery.length)) + '</strong>'
+          pos += matchedQuery.length
+        } else {
+          result += escape(excerpt.slice(pos, pos + 1))
+          pos += 1
+        }
+      }
+
+      return result
+    },
+
+    /**
+     * @param {string[]} queries
+     * @return {string[]}
+     */
+    sortQueries (queries) {
+      const uniqueList = Array.from(new Set(queries))
+
+      return uniqueList.sort((a, b) => {
+        if (a.length < b.length) {
+          return 1;
+        }
+
+        if (a.length > b.length) {
+          return -1;
+        }
+
+        return a < b ? -1 : 1;
+      })
+    },
+
+    /**
+     * @param {string} excerpt
+     * @param {number} pos
+     * @param {string[]} queries
+     * @return {(string|null)}
+     */
+    findMatchedQuery (excerpt, pos, queries) {
+      for (let i = 0, len = queries.length; i < len; i++) {
+        if (excerpt.indexOf(queries[i], pos) === pos) {
+          return queries[i]
+        }
+      }
+
+      return null
     },
 
     isSearchable (page) {
