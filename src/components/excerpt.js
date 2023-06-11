@@ -35,19 +35,27 @@ const highlight = (excerpt, queries) => {
   const excerptLowerCase = excerpt.toLowerCase();
   const sortedQueries = sortQueries(queries);
 
+  let unmatchedBuffer = '';
   let result = '';
 
   for (let pos = 0, len = excerpt.length; pos < len; ) {
     const matchedQuery = findMatchedQuery(excerptLowerCase, pos, sortedQueries);
 
     if (typeof matchedQuery === 'string') {
+      result += escape(unmatchedBuffer);
+      unmatchedBuffer = '';
+
       result += '<strong>' + escape(excerpt.slice(pos, pos + matchedQuery.length)) + '</strong>';
+
       pos += matchedQuery.length;
     } else {
-      result += escape(excerpt.slice(pos, pos + 1));
+      unmatchedBuffer += excerpt.slice(pos, pos + 1);
+
       pos += 1;
     }
   }
+
+  result += escape(unmatchedBuffer);
 
   return result;
 };
