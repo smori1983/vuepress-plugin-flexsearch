@@ -194,8 +194,7 @@ export default {
         this.$router.push(path)
       }
 
-      this.query = ''
-      this.focusIndex = 0
+      this.$refs.input.blur()
     },
 
     focus (i) {
