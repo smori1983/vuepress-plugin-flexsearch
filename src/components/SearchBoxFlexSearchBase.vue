@@ -83,33 +83,33 @@ export default {
         return []
       }
 
-      const max = this.$site.themeConfig.searchMaxSuggestions || FLEX_SEARCH_MAX_SUGGESTIONS
       const localePath = this.$localePath
 
       if (!this.docs.has(localePath)) {
         return []
       }
 
+      const max = this.$site.themeConfig.searchMaxSuggestions || FLEX_SEARCH_MAX_SUGGESTIONS
+
+      /**
+       * @type {string[]}
+       */
       const matchedKeys = this.docs.get(localePath).search(query, {
         pluck: 'searchData',
         limit: max,
       })
 
-      const res = []
-
-      matchedKeys.forEach((key) => {
+      return matchedKeys.map((key) => {
         const page = data[localePath][key]
 
-        res.push({
+        return {
           title: page.title,
           path: page.path,
           excerpt: excerpt.create(page.content, query, {
             aroundLength: 100,
           }),
-        })
+        }
       })
-
-      return res
     },
 
     // make suggestions align right when there are not enough items
