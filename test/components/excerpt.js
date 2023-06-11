@@ -34,6 +34,12 @@ describe('components', () => {
         'java and javascript',
         '<strong>java</strong> and <strong>javascript</strong>',
       ],
+
+      [
+        'bug',
+        'It is <b>NOT</b> a bug',
+        'It is &lt;b&gt;NOT&lt;/b&gt; a <strong>bug</strong>',
+      ],
     ];
 
     dataSet.forEach(([query, content, highlighted]) => {
