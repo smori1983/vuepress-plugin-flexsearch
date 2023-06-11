@@ -4,7 +4,7 @@
  */
 
 const path = require('path');
-const kuromojiDefault = require('./tokenizer/kuromoji-default');
+const tokenizer = require('./tokenizer');
 
 const flexSearchData = {};
 
@@ -21,6 +21,7 @@ module.exports = (options, ctx) => {
     excerptAroundLength = 100,
     excerptHeadText = '... ',
     excerptTailText = ' ...',
+    tokenizerType = 'kuromoji.default',
   } = options;
 
   /**
@@ -82,7 +83,7 @@ module.exports = (options, ctx) => {
           continue;
         }
 
-        const pageData = await kuromojiDefault.create(page);
+        const pageData = await tokenizer.use(tokenizerType).create(page);
 
         localeBasedPageData.get(localePath).set(page.key, {
           title: page.title,
