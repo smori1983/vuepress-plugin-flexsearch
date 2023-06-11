@@ -53,6 +53,9 @@ import excerpt from './excerpt'
 
 /* global FLEX_SEARCH_HOTKEYS */
 /* global FLEX_SEARCH_MAX_SUGGESTIONS */
+/* global FLEX_SEARCH_EXCERPT_AROUND_LENGTH */
+/* global FLEX_SEARCH_EXCERPT_HEAD_TEXT */
+/* global FLEX_SEARCH_EXCERPT_TAIL_TEXT */
 export default {
   name: 'SearchBoxFlexSearchBase',
 
@@ -106,7 +109,9 @@ export default {
           title: page.title,
           path: page.path,
           excerpt: excerpt.create(page.content, query, {
-            aroundLength: 100,
+            aroundLength: FLEX_SEARCH_EXCERPT_AROUND_LENGTH,
+            headText: FLEX_SEARCH_EXCERPT_HEAD_TEXT,
+            tailText: FLEX_SEARCH_EXCERPT_TAIL_TEXT,
           }),
         }
       })
