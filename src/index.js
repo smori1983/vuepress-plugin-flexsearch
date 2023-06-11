@@ -20,11 +20,21 @@ module.exports = (options, ctx) => {
     searchPaths = null,
   } = options;
 
+  /**
+   * @type {(null|RegExp[])}
+   */
+  const searchPathPatterns = ((paths) => {
+    if (paths === null) {
+      return null;
+    } else {
+      return Array.isArray(paths) ? paths : new Array(paths);
+    }
+  })(searchPaths);
+
   return {
     define: {
       FLEX_SEARCH_HOTKEYS: searchHotKeys,
       FLEX_SEARCH_MAX_SUGGESTIONS: searchMaxSuggestions,
-      FLEX_SEARCH_PATHS: searchPaths,
     },
 
     alias: {
@@ -52,6 +62,12 @@ module.exports = (options, ctx) => {
 
         if (frontmatter.search === false) {
           continue;
+        }
+
+        if (searchPathPatterns !== null) {
+          if (!searchPathPatterns.some(pattern => pattern.test(page.regularPath))) {
+            continue;
+          }
         }
 
         const localePath = page._computed.$localePath;

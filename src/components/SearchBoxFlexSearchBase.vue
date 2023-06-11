@@ -53,7 +53,6 @@ import excerpt from './excerpt'
 
 /* global FLEX_SEARCH_HOTKEYS */
 /* global FLEX_SEARCH_MAX_SUGGESTIONS */
-/* global FLEX_SEARCH_PATHS */
 export default {
   name: 'SearchBoxFlexSearchBase',
 
@@ -100,11 +99,6 @@ export default {
 
       matchedKeys.forEach((key) => {
         const page = data[localePath][key]
-
-        // filter out results that do not match searchable paths
-        if (!this.isSearchable(page)) {
-          return
-        }
 
         res.push({
           title: page.title,
@@ -160,21 +154,6 @@ export default {
 
         this.docs.set(locale, doc)
       }
-    },
-
-    isSearchable (page) {
-      let searchPaths = FLEX_SEARCH_PATHS
-
-      // all paths searchables
-      if (searchPaths === null) {
-        return true
-      }
-
-      searchPaths = Array.isArray(searchPaths) ? searchPaths : new Array(searchPaths)
-
-      return searchPaths.filter(path => {
-        return page.path.match(path)
-      }).length > 0
     },
 
     onHotkey (event) {
