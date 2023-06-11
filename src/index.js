@@ -75,6 +75,7 @@ module.exports = (options, ctx) => {
           title: page.title,
           path: page.regularPath,
           searchData: keywords.join(' '),
+          content: page._strippedContent.replace(/[\r\n\s]+/g, ' '),
         });
       }
 

@@ -36,6 +36,11 @@
         >
           <span class="page-title">{{ s.title || s.path }}</span>
         </a>
+
+        <div
+          v-html="s.excerpt"
+          class="page-excerpt"
+        ></div>
       </li>
     </ul>
   </div>
@@ -44,6 +49,7 @@
 <script>
 import { Document } from 'flexsearch'
 import data from '@dynamic/vuepress-plugin-flexsearch/data'
+import excerpt from './excerpt'
 
 /* global FLEX_SEARCH_HOTKEYS */
 /* global FLEX_SEARCH_MAX_SUGGESTIONS */
@@ -68,8 +74,11 @@ export default {
       return this.focused && this.suggestions.length > 0
     },
 
+    /**
+     * @return {{title: string, path: string, excerpt: string}[]}
+     */
     suggestions () {
-      const query = this.query.trim().toLowerCase()
+      const query = this.query.trim()
 
       if (query.length === 0) {
         return []
@@ -97,7 +106,13 @@ export default {
           return
         }
 
-        res.push(page)
+        res.push({
+          title: page.title,
+          path: page.path,
+          excerpt: excerpt.create(page.content, query, {
+            aroundLength: 100,
+          }),
+        })
       })
 
       return res
@@ -240,7 +255,7 @@ export default {
       border-color $accentColor
   .suggestions
     background #fff
-    width 20rem
+    width 40rem
     position absolute
     top 2 rem
     border 1px solid darken($borderColor, 10%)
@@ -263,6 +278,11 @@ export default {
       background-color #f3f4f5
       a
         color $accentColor
+    .page-excerpt
+      margin 1rem 0 0 1rem
+      font-size 90%
+      white-space normal
+      word-break break-all
 
 @media (max-width: $MQNarrow)
   .search-box
