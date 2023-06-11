@@ -53,7 +53,6 @@ import excerpt from './excerpt'
 
 /* global FLEX_SEARCH_HOTKEYS */
 /* global FLEX_SEARCH_MAX_SUGGESTIONS */
-/* global FLEX_SEARCH_PATHS */
 export default {
   name: 'SearchBoxFlexSearchBase',
 
@@ -84,38 +83,33 @@ export default {
         return []
       }
 
-      const max = this.$site.themeConfig.searchMaxSuggestions || FLEX_SEARCH_MAX_SUGGESTIONS
       const localePath = this.$localePath
 
       if (!this.docs.has(localePath)) {
         return []
       }
 
+      const max = this.$site.themeConfig.searchMaxSuggestions || FLEX_SEARCH_MAX_SUGGESTIONS
+
+      /**
+       * @type {string[]}
+       */
       const matchedKeys = this.docs.get(localePath).search(query, {
         pluck: 'searchData',
         limit: max,
       })
 
-      const res = []
-
-      matchedKeys.forEach((key) => {
+      return matchedKeys.map((key) => {
         const page = data[localePath][key]
 
-        // filter out results that do not match searchable paths
-        if (!this.isSearchable(page)) {
-          return
-        }
-
-        res.push({
+        return {
           title: page.title,
           path: page.path,
           excerpt: excerpt.create(page.content, query, {
             aroundLength: 100,
           }),
-        })
+        }
       })
-
-      return res
     },
 
     // make suggestions align right when there are not enough items
@@ -160,21 +154,6 @@ export default {
 
         this.docs.set(locale, doc)
       }
-    },
-
-    isSearchable (page) {
-      let searchPaths = FLEX_SEARCH_PATHS
-
-      // all paths searchables
-      if (searchPaths === null) {
-        return true
-      }
-
-      searchPaths = Array.isArray(searchPaths) ? searchPaths : new Array(searchPaths)
-
-      return searchPaths.filter(path => {
-        return page.path.match(path)
-      }).length > 0
     },
 
     onHotkey (event) {
