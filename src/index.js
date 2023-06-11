@@ -96,8 +96,8 @@ module.exports = (options, ctx) => {
         localeBasedPageData.get(localePath).set(page.key, {
           title: page.title,
           path: page.regularPath,
-          searchData: keywords.join(' '),
-          content: page._strippedContent.replace(/[\r\n\s]+/g, ' '),
+          dataForSearch: keywords.join(' '),
+          dataForExcerpt: page._strippedContent.replace(/[\r\n\s]+/g, ' '),
         });
       }
 

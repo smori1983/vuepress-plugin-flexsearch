@@ -98,7 +98,7 @@ export default {
        * @type {string[]}
        */
       const matchedKeys = this.docs.get(localePath).search(query, {
-        pluck: 'searchData',
+        pluck: 'dataForSearch',
         limit: max,
       })
 
@@ -108,7 +108,7 @@ export default {
         return {
           title: page.title,
           path: page.path,
-          excerpt: excerpt.create(page.content, query, {
+          excerpt: excerpt.create(page.dataForExcerpt, query, {
             aroundLength: FLEX_SEARCH_EXCERPT_AROUND_LENGTH,
             headText: FLEX_SEARCH_EXCERPT_HEAD_TEXT,
             tailText: FLEX_SEARCH_EXCERPT_TAIL_TEXT,
@@ -143,7 +143,7 @@ export default {
           tokenize: 'reverse',
           id: 'key',
           index: [
-            'searchData',
+            'dataForSearch',
           ],
         })
 
@@ -153,7 +153,7 @@ export default {
         for (const key in localeData) {
           doc.add({
             key: key,
-            searchData: localeData[key].searchData,
+            dataForSearch: localeData[key].dataForSearch,
           })
         }
 
