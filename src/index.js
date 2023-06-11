@@ -18,6 +18,9 @@ module.exports = (options, ctx) => {
     searchHotKeys = ['s', '/'],
     searchMaxSuggestions = 5,
     searchPaths = null,
+    excerptAroundLength = 100,
+    excerptHeadText = '... ',
+    excerptTailText = ' ...',
   } = options;
 
   /**
@@ -35,6 +38,9 @@ module.exports = (options, ctx) => {
     define: {
       FLEX_SEARCH_HOTKEYS: searchHotKeys,
       FLEX_SEARCH_MAX_SUGGESTIONS: searchMaxSuggestions,
+      FLEX_SEARCH_EXCERPT_AROUND_LENGTH: excerptAroundLength,
+      FLEX_SEARCH_EXCERPT_HEAD_TEXT: excerptHeadText,
+      FLEX_SEARCH_EXCERPT_TAIL_TEXT: excerptTailText,
     },
 
     alias: {
