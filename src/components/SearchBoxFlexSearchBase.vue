@@ -109,7 +109,9 @@ export default {
         res.push({
           title: page.title,
           path: page.path,
-          excerpt: excerpt.create(page.content, query),
+          excerpt: excerpt.create(page.content, query, {
+            aroundLength: 100,
+          }),
         })
       })
 
