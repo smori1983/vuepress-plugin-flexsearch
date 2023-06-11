@@ -132,7 +132,7 @@ export default {
   },
 
   methods: {
-    setUpFlexSearchDocument() {
+    setUpFlexSearchDocument () {
       for (const locale in data) {
         const doc = new Document({
           tokenize: 'reverse',
