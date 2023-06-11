@@ -1,11 +1,25 @@
 const ExcerptHtml = require('./excerpt-html');
 
 /**
+ * @typedef {Object} ExcerptOption
+ * @property {number} [aroundLength]
+ * @property {string} [head]
+ * @property {string} [tail]
+ */
+
+/**
  * @param {string} content
  * @param {string} query
+ * @param {ExcerptOption} [option]
  * @return {string}
  */
-const create = (content, query) => {
+const create = (content, query, option) => {
+  const {
+    aroundLength = 50,
+    headText = '... ',
+    tailText = ' ...',
+  } = option || {};
+
   const queries = query
     .split(/\s+/)
     .map(q => q.toLowerCase());
@@ -14,10 +28,10 @@ const create = (content, query) => {
     const position = content.toLowerCase().indexOf(queries[i]);
 
     if (position >= 0) {
-      const from = Math.max(0, position - 50);
-      const to = position + queries[i].length + 50;
-      const head = from > 0 ? '... ' : '';
-      const tail = content.length > to ? ' ...' : '';
+      const from = Math.max(0, position - aroundLength);
+      const to = position + queries[i].length + aroundLength;
+      const head = from > 0 ? headText : '';
+      const tail = content.length > to ? tailText : '';
 
       return head + highlight(content.slice(from, to), queries) + tail;
     }
