@@ -1,4 +1,4 @@
-const { escape } = require('he');
+const ExcerptHtml = require('./excerpt-html');
 
 /**
  * @param {string} content
@@ -32,32 +32,28 @@ const create = (content, query) => {
  * @return {string}
  */
 const highlight = (excerpt, queries) => {
+  const excerptHtml = new ExcerptHtml();
+
   const excerptLowerCase = excerpt.toLowerCase();
   const sortedQueries = sortQueries(queries);
-
-  let unmatchedBuffer = '';
-  let result = '';
 
   for (let pos = 0, len = excerpt.length; pos < len; ) {
     const matchedQuery = findMatchedQuery(excerptLowerCase, pos, sortedQueries);
 
     if (typeof matchedQuery === 'string') {
-      result += escape(unmatchedBuffer);
-      unmatchedBuffer = '';
-
-      result += '<strong>' + escape(excerpt.slice(pos, pos + matchedQuery.length)) + '</strong>';
+      excerptHtml.addHtmlTag('<strong>');
+      excerptHtml.addPlainText(excerpt.slice(pos, pos + matchedQuery.length));
+      excerptHtml.addHtmlTag('</strong>');
 
       pos += matchedQuery.length;
     } else {
-      unmatchedBuffer += excerpt.slice(pos, pos + 1);
+      excerptHtml.addPlainText(excerpt.slice(pos, pos + 1));
 
       pos += 1;
     }
   }
 
-  result += escape(unmatchedBuffer);
-
-  return result;
+  return excerptHtml.getResult();
 };
 
 /**
