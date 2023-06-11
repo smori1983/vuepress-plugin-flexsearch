@@ -4,7 +4,7 @@
  */
 
 const path = require('path');
-const { tokenize } = require('kuromojin');
+const tokenizer = require('./tokenizer');
 
 const flexSearchData = {};
 
@@ -21,6 +21,7 @@ module.exports = (options, ctx) => {
     excerptAroundLength = 100,
     excerptHeadText = '... ',
     excerptTailText = ' ...',
+    tokenizerType = 'kuromoji.default',
   } = options;
 
   /**
@@ -82,22 +83,13 @@ module.exports = (options, ctx) => {
           continue;
         }
 
-        const tokens = await tokenize(page._strippedContent);
-        const keywords = [];
-
-        tokens.forEach((token) => {
-          if (['名詞'].includes(token.pos)) {
-            if (token.surface_form.trim().length >= 1) {
-              keywords.push(token.surface_form);
-            }
-          }
-        });
+        const pageData = await tokenizer.use(tokenizerType).create(page);
 
         localeBasedPageData.get(localePath).set(page.key, {
           title: page.title,
           path: page.regularPath,
-          dataForSearch: keywords.join(' '),
-          dataForExcerpt: page._strippedContent.replace(/[\r\n\s]+/g, ' '),
+          dataForSearch: pageData.dataForSearch,
+          dataForExcerpt: pageData.dataForExcerpt,
         });
       }
 
