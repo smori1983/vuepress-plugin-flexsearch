@@ -1,5 +1,6 @@
 /**
  * @typedef {import('vuepress-types').Page} Page
+ * @typedef {import('kuromojin').KuromojiToken} KuromojiToken
  */
 
 const { tokenize } = require('kuromojin');
@@ -10,22 +11,22 @@ const { tokenize } = require('kuromojin');
  * @return {Promise<{keywords: string[], excerpt: string}>}
  */
 const create = async (page) => {
-  const keywords = [];
-
+  /**
+   * @type {KuromojiToken[]}
+   */
   const tokens = await tokenize(page._strippedContent);
 
-  tokens.forEach((token) => {
-    if (['名詞'].includes(token.pos)) {
-      if (token.surface_form.trim().length >= 1) {
-        keywords.push(token.surface_form);
-      }
-    }
-  });
+  const keywords = tokens
+    .filter(token => token.pos === '名詞')
+    .map(token => token.surface_form);
+
+  const excerpt = page._strippedContent
+    .replace(/[\r\n\s]+/g, ' ');
 
   return {
-    keywords: keywords,
-    excerpt: page._strippedContent.replace(/[\r\n\s]+/g, ' '),
-  }
+    keywords,
+    excerpt,
+  };
 };
 
 module.exports.create = create;
