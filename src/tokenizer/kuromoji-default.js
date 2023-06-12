@@ -6,7 +6,6 @@
 const { tokenize } = require('kuromojin');
 
 /**
- *
  * @param {Page} page
  * @return {Promise<{keywords: string[], excerpt: string}>}
  */

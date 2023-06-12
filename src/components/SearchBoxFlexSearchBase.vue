@@ -50,6 +50,7 @@
 import { Document } from 'flexsearch'
 import data from '@dynamic/vuepress-plugin-flexsearch/data'
 import excerpt from './excerpt'
+import ngram from '../tokenizer/ngram'
 
 /* global FLEX_SEARCH_HOTKEYS */
 /* global FLEX_SEARCH_MAX_SUGGESTIONS */
@@ -94,21 +95,10 @@ export default {
 
       const max = this.$site.themeConfig.searchMaxSuggestions || FLEX_SEARCH_MAX_SUGGESTIONS
 
-      const queryForSearch = ((query) => {
-        return query
-          .split(/\s+/)
-          .map((word) => {
-            const result = []
-
-            // N-gram (N = 3)
-            for (let i = 0; i < word.length; i++) {
-              result.push(word[i] + (word[i + 1] || '') + (word[i + 2] || ''))
-            }
-
-            return result.join(' ')
-          })
-          .join(' ')
-      })(query)
+      const queryForSearch = query
+        .split(/\s+/)
+        .map(word => ngram.create(word, 3).join(' '))
+        .join(' ')
 
       /**
        * @type {string[]}

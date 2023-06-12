@@ -2,6 +2,7 @@
  * @typedef {import('vuepress-types').Page} Page
  */
 
+const ngram = require('./tokenizer/ngram');
 const kuromojiDefault = require('./tokenizer/kuromoji-default');
 
 /**
@@ -24,25 +25,9 @@ const use = async (type, page) => {
   const data = await tokenizer.create(page);
 
   return {
-    dataForSearch: createNgram(data.keywords),
+    dataForSearch: ngram.create(data.keywords.join(''), 3).join(' '),
     dataForExcerpt: data.excerpt,
   };
-};
-
-/**
- * @param {string[]} keywords
- * @return {string}
- */
-const createNgram = (keywords) => {
-  const result = [];
-  const text = keywords.join('');
-
-  // N-gram (N = 3)
-  for (let i = 0, len = text.length; i < len; i++) {
-    result.push(text[i] + (text[i + 1] || '') + (text[i + 2] || ''));
-  }
-
-  return result.join(' ');
 };
 
 /**
