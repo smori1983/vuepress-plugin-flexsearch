@@ -22,6 +22,7 @@ module.exports = (options, ctx) => {
     excerptHeadText = '... ',
     excerptTailText = ' ...',
     tokenizerType = 'kuromoji.default',
+    ngramSize = 3,
   } = options;
 
   /**
@@ -42,6 +43,7 @@ module.exports = (options, ctx) => {
       FLEX_SEARCH_EXCERPT_AROUND_LENGTH: excerptAroundLength,
       FLEX_SEARCH_EXCERPT_HEAD_TEXT: excerptHeadText,
       FLEX_SEARCH_EXCERPT_TAIL_TEXT: excerptTailText,
+      FLEX_SEARCH_NGRAM_SIZE: ngramSize,
     },
 
     alias: {
@@ -83,7 +85,9 @@ module.exports = (options, ctx) => {
           continue;
         }
 
-        const pageData = await tokenizer.use(tokenizerType, page);
+        const pageData = await tokenizer.use(tokenizerType, page, {
+          ngramSize: ngramSize,
+        });
 
         localeBasedPageData.get(localePath).set(page.key, {
           title: page.title,

@@ -57,6 +57,7 @@ import ngram from '../tokenizer/ngram'
 /* global FLEX_SEARCH_EXCERPT_AROUND_LENGTH */
 /* global FLEX_SEARCH_EXCERPT_HEAD_TEXT */
 /* global FLEX_SEARCH_EXCERPT_TAIL_TEXT */
+/* global FLEX_SEARCH_NGRAM_SIZE */
 export default {
   name: 'SearchBoxFlexSearchBase',
 
@@ -97,7 +98,7 @@ export default {
 
       const queryForSearch = query
         .split(/\s+/)
-        .map(word => ngram.create(word, 3).join(' '))
+        .map(word => ngram.create(word, FLEX_SEARCH_NGRAM_SIZE).join(' '))
         .join(' ')
 
       /**
