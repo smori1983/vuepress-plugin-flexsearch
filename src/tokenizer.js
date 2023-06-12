@@ -1,16 +1,43 @@
-const kuromojiDefault = require('./tokenizer/kuromoji-default');
+/**
+ * @typedef {import('vuepress-types').Page} Page
+ * @typedef {import('./tokenizer/tokenizer-base')} TokenizerBase
+ */
+
+const ngram = require('./tokenizer/ngram');
+const KuromojiDefault = require('./tokenizer/kuromoji-default');
 
 /**
- * @type {Map<string, Object>}
+ * @type {Map<string, TokenizerBase>}
  */
 const tokenizers = new Map();
 
-const use = (type) => {
+/**
+ * @typedef {Object} TokenizerUseOption
+ * @property {number} [ngramSize]
+ */
+
+/**
+ * @param {string} type
+ * @param {Page} page
+ * @param {TokenizerUseOption} [option]
+ * @return {Promise<{dataForSearch: string, dataForExcerpt: string}>}
+ */
+const use = async (type, page, option) => {
   if (!tokenizers.has(type)) {
     throw new Error(`tokenizer type not found: ${type}`);
   }
 
-  return tokenizers.get(type);
+  const {
+    ngramSize = 3,
+  } = option || {};
+
+  const tokenizer = tokenizers.get(type);
+  const data = await tokenizer.create(page);
+
+  return {
+    dataForSearch: ngram.create(data.tokens.join(''), ngramSize).join(' '),
+    dataForExcerpt: data.excerpt,
+  };
 };
 
 /**
@@ -21,7 +48,7 @@ const register = (type, tokenizer) => {
   tokenizers.set(type, tokenizer);
 };
 
-register('kuromoji.default', kuromojiDefault);
+register('kuromoji.default', new KuromojiDefault());
 
 module.exports.use = use;
 module.exports.register = register;

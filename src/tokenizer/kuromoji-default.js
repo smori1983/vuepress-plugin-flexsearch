@@ -1,31 +1,35 @@
 /**
  * @typedef {import('vuepress-types').Page} Page
+ * @typedef {import('kuromojin').KuromojiToken} KuromojiToken
  */
 
 const { tokenize } = require('kuromojin');
+const TokenizerBase = require('./tokenizer-base');
 
 /**
+ * Default tokenizer using kuromoji (Japanese morphological analyzer).
  *
- * @param {Page} page
- * @return {Promise<{dataForSearch: string, dataForExcerpt: string}>}
+ * - tokens: Extract nouns (名詞) only.
+ * - excerpt: Use markdown text.
  */
-const create = async (page) => {
-  const keywords = [];
+class KuromojiDefault extends TokenizerBase {
+  async create(page) {
+    /**
+     * @type {KuromojiToken[]}
+     */
+    const allTokens = await tokenize(page._strippedContent);
 
-  const tokens = await tokenize(page._strippedContent);
+    const tokens = allTokens
+      .filter(token => token.pos === '名詞')
+      .map(token => token.surface_form);
 
-  tokens.forEach((token) => {
-    if (['名詞'].includes(token.pos)) {
-      if (token.surface_form.trim().length >= 1) {
-        keywords.push(token.surface_form);
-      }
-    }
-  });
+    const excerpt = this._defaultForExcerpt(page);
 
-  return {
-    dataForSearch: keywords.join(' '),
-    dataForExcerpt: page._strippedContent.replace(/[\r\n\s]+/g, ' '),
+    return {
+      tokens,
+      excerpt,
+    };
   }
-};
+}
 
-module.exports.create = create;
+module.exports = KuromojiDefault;

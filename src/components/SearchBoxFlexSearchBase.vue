@@ -50,12 +50,14 @@
 import { Document } from 'flexsearch'
 import data from '@dynamic/vuepress-plugin-flexsearch/data'
 import excerpt from './excerpt'
+import ngram from '../tokenizer/ngram'
 
 /* global FLEX_SEARCH_HOTKEYS */
 /* global FLEX_SEARCH_MAX_SUGGESTIONS */
 /* global FLEX_SEARCH_EXCERPT_AROUND_LENGTH */
 /* global FLEX_SEARCH_EXCERPT_HEAD_TEXT */
 /* global FLEX_SEARCH_EXCERPT_TAIL_TEXT */
+/* global FLEX_SEARCH_NGRAM_SIZE */
 export default {
   name: 'SearchBoxFlexSearchBase',
 
@@ -94,10 +96,15 @@ export default {
 
       const max = this.$site.themeConfig.searchMaxSuggestions || FLEX_SEARCH_MAX_SUGGESTIONS
 
+      const queryForSearch = query
+        .split(/\s+/)
+        .map(word => ngram.create(word, FLEX_SEARCH_NGRAM_SIZE).join(' '))
+        .join(' ')
+
       /**
        * @type {string[]}
        */
-      const matchedKeys = this.docs.get(localePath).search(query, {
+      const matchedKeys = this.docs.get(localePath).search(queryForSearch, {
         pluck: 'dataForSearch',
         limit: max,
       })
@@ -140,7 +147,7 @@ export default {
     setUpFlexSearchDocument () {
       for (const locale in data) {
         const doc = new Document({
-          tokenize: 'reverse',
+          tokenize: 'forward',
           id: 'key',
           index: [
             'dataForSearch',
