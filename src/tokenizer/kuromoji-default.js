@@ -4,28 +4,26 @@
  */
 
 const { tokenize } = require('kuromojin');
+const TokenizerBase = require('./tokenizer-base');
 
-/**
- * @param {Page} page
- * @return {Promise<{keywords: string[], excerpt: string}>}
- */
-const create = async (page) => {
-  /**
-   * @type {KuromojiToken[]}
-   */
-  const tokens = await tokenize(page._strippedContent);
+class KuromojiDefault extends TokenizerBase {
+  async create(page) {
+    /**
+     * @type {KuromojiToken[]}
+     */
+    const tokens = await tokenize(page._strippedContent);
 
-  const keywords = tokens
-    .filter(token => token.pos === '名詞')
-    .map(token => token.surface_form);
+    const keywords = tokens
+      .filter(token => token.pos === '名詞')
+      .map(token => token.surface_form);
 
-  const excerpt = page._strippedContent
-    .replace(/[\r\n\s]+/g, ' ');
+    const excerpt = this._defaultForExcerpt(page);
 
-  return {
-    keywords,
-    excerpt,
-  };
-};
+    return {
+      keywords,
+      excerpt,
+    };
+  }
+}
 
-module.exports.create = create;
+module.exports = KuromojiDefault;

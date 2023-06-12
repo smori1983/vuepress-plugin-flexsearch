@@ -1,12 +1,13 @@
 /**
  * @typedef {import('vuepress-types').Page} Page
+ * @typedef {import('./tokenizer/tokenizer-base')} TokenizerBase
  */
 
 const ngram = require('./tokenizer/ngram');
-const kuromojiDefault = require('./tokenizer/kuromoji-default');
+const KuromojiDefault = require('./tokenizer/kuromoji-default');
 
 /**
- * @type {Map<string, Object>}
+ * @type {Map<string, TokenizerBase>}
  */
 const tokenizers = new Map();
 
@@ -47,7 +48,7 @@ const register = (type, tokenizer) => {
   tokenizers.set(type, tokenizer);
 };
 
-register('kuromoji.default', kuromojiDefault);
+register('kuromoji.default', new KuromojiDefault());
 
 module.exports.use = use;
 module.exports.register = register;
