@@ -43,7 +43,7 @@ describe('components', () => {
     ];
 
     dataSet.forEach(([query, content, highlighted]) => {
-      it (`query: ${query}, content: ${content}`, () => {
+      it(`query: ${query}, content: ${content}`, () => {
         const result = excerpt.create(content, query);
 
         assert.deepStrictEqual(result, highlighted);
