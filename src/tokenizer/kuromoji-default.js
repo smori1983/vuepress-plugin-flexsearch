@@ -7,7 +7,7 @@ const { tokenize } = require('kuromojin');
 /**
  *
  * @param {Page} page
- * @return {Promise<{dataForSearch: string, dataForExcerpt: string}>}
+ * @return {Promise<{keywords: string[], excerpt: string}>}
  */
 const create = async (page) => {
   const keywords = [];
@@ -23,8 +23,8 @@ const create = async (page) => {
   });
 
   return {
-    dataForSearch: keywords.join(' '),
-    dataForExcerpt: page._strippedContent.replace(/[\r\n\s]+/g, ' '),
+    keywords: keywords,
+    excerpt: page._strippedContent.replace(/[\r\n\s]+/g, ' '),
   }
 };
 

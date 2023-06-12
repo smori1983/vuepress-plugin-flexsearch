@@ -1,3 +1,7 @@
+/**
+ * @typedef {import('vuepress-types').Page} Page
+ */
+
 const kuromojiDefault = require('./tokenizer/kuromoji-default');
 
 /**
@@ -5,12 +9,40 @@ const kuromojiDefault = require('./tokenizer/kuromoji-default');
  */
 const tokenizers = new Map();
 
-const use = (type) => {
+/**
+ *
+ * @param {string} type
+ * @param {Page} page
+ * @return {Promise<{dataForSearch: string, dataForExcerpt: string}>}
+ */
+const use = async (type, page) => {
   if (!tokenizers.has(type)) {
     throw new Error(`tokenizer type not found: ${type}`);
   }
 
-  return tokenizers.get(type);
+  const tokenizer = tokenizers.get(type);
+  const data = await tokenizer.create(page);
+
+  return {
+    dataForSearch: createNgram(data.keywords),
+    dataForExcerpt: data.excerpt,
+  };
+};
+
+/**
+ * @param {string[]} keywords
+ * @return {string}
+ */
+const createNgram = (keywords) => {
+  const result = [];
+  const text = keywords.join('');
+
+  // N-gram (N = 3)
+  for (let i = 0, len = text.length; i < len; i++) {
+    result.push(text[i] + (text[i + 1] || '') + (text[i + 2] || ''));
+  }
+
+  return result.join(' ');
 };
 
 /**

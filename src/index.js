@@ -83,7 +83,7 @@ module.exports = (options, ctx) => {
           continue;
         }
 
-        const pageData = await tokenizer.use(tokenizerType).create(page);
+        const pageData = await tokenizer.use(tokenizerType, page);
 
         localeBasedPageData.get(localePath).set(page.key, {
           title: page.title,
