@@ -11,16 +11,16 @@ class KuromojiDefault extends TokenizerBase {
     /**
      * @type {KuromojiToken[]}
      */
-    const tokens = await tokenize(page._strippedContent);
+    const allTokens = await tokenize(page._strippedContent);
 
-    const keywords = tokens
+    const tokens = allTokens
       .filter(token => token.pos === '名詞')
       .map(token => token.surface_form);
 
     const excerpt = this._defaultForExcerpt(page);
 
     return {
-      keywords,
+      tokens,
       excerpt,
     };
   }

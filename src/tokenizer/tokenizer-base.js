@@ -4,7 +4,7 @@
 
 /**
  * @typedef {Object} CreateReturnValue
- * @property {string[]} keywords
+ * @property {string[]} tokens
  * @property {string} excerpt
  */
 
@@ -16,7 +16,7 @@ class TokenizerBase {
    */
   async create(page) {
     return {
-      keywords: [],
+      tokens: [],
       excerpt: this._defaultForExcerpt(page),
     };
   }

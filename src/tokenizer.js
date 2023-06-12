@@ -35,7 +35,7 @@ const use = async (type, page, option) => {
   const data = await tokenizer.create(page);
 
   return {
-    dataForSearch: ngram.create(data.keywords.join(''), ngramSize).join(' '),
+    dataForSearch: ngram.create(data.tokens.join(''), ngramSize).join(' '),
     dataForExcerpt: data.excerpt,
   };
 };
