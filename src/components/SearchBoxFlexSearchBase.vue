@@ -156,7 +156,7 @@ export default {
     setUpFlexSearchDocument () {
       for (const locale in data) {
         const doc = new Document({
-          tokenize: 'reverse',
+          tokenize: 'forward',
           id: 'key',
           index: [
             'dataForSearch',
