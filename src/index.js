@@ -5,6 +5,7 @@
 
 const path = require('path');
 const tokenizer = require('./tokenizer');
+const TokenizerBase = require('./tokenizer/tokenizer-base');
 
 const flexSearchData = {};
 
@@ -118,3 +119,6 @@ module.exports = (options, ctx) => {
     },
   };
 };
+
+module.exports.tokenizer = tokenizer;
+module.exports.TokenizerBase = TokenizerBase;
