@@ -16,7 +16,7 @@ const flexSearchData = {};
 module.exports = (options, ctx) => {
   const {
     searchHotKeys = ['s', '/'],
-    searchMaxSuggestions = 5,
+    searchMaxSuggestions = 20,
     searchPaths = null,
     excerptAroundLength = 100,
     excerptHeadText = '... ',
