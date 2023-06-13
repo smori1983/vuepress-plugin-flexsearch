@@ -59,6 +59,7 @@ import ngram from '../tokenizer/ngram'
 /* global FLEX_SEARCH_EXCERPT_HEAD_TEXT */
 /* global FLEX_SEARCH_EXCERPT_TAIL_TEXT */
 /* global FLEX_SEARCH_NGRAM_SIZE */
+/* global FLEX_SEARCH_UI_ALIGN_RIGHT_FACTOR */
 export default {
   name: 'SearchBoxFlexSearchBase',
 
@@ -142,7 +143,7 @@ export default {
     alignRight () {
       const navCount = (this.$site.themeConfig.nav || []).length
       const repo = this.$site.repo ? 1 : 0
-      return navCount + repo <= 2
+      return navCount + repo <= FLEX_SEARCH_UI_ALIGN_RIGHT_FACTOR
     }
   },
 
