@@ -17,6 +17,7 @@
       >
     </form>
     <ul
+      ref="suggestions"
       v-if="showSuggestions"
       class="suggestions"
       :class="{ 'align-right': alignRight }"
@@ -71,6 +72,19 @@ export default {
       focusIndex: 0,
       placeholder: undefined
     }
+  },
+
+  watch: {
+    focused () {
+      this.$nextTick(() => {
+        this.resizeSuggestionsBox()
+      })
+    },
+    suggestions () {
+      this.$nextTick(() => {
+        this.resizeSuggestionsBox()
+      })
+    },
   },
 
   computed: {
@@ -134,6 +148,7 @@ export default {
 
   mounted () {
     this.placeholder = this.$site.themeConfig.searchPlaceholder || ''
+    window.addEventListener('resize', this.resizeSuggestionsBox)
     document.addEventListener('keydown', this.onHotkey)
 
     this.setUpFlexSearchDocument()
@@ -165,6 +180,12 @@ export default {
         }
 
         this.docs.set(locale, doc)
+      }
+    },
+
+    resizeSuggestionsBox () {
+      if (this.$refs.suggestions) {
+        this.$refs.suggestions.style.maxHeight = (window.innerHeight - 100) + 'px'
       }
     },
 
@@ -245,6 +266,7 @@ export default {
       border-color $accentColor
       width 15rem
   .suggestions
+    overflow-y scroll
     background #fff
     width 40rem
     position absolute
