@@ -17,6 +17,7 @@
       >
     </form>
     <ul
+      ref="suggestions"
       v-if="showSuggestions"
       class="suggestions"
       :class="{ 'align-right': alignRight }"
@@ -58,6 +59,7 @@ import ngram from '../tokenizer/ngram'
 /* global FLEX_SEARCH_EXCERPT_HEAD_TEXT */
 /* global FLEX_SEARCH_EXCERPT_TAIL_TEXT */
 /* global FLEX_SEARCH_NGRAM_SIZE */
+/* global FLEX_SEARCH_UI_ALIGN_RIGHT_FACTOR */
 export default {
   name: 'SearchBoxFlexSearchBase',
 
@@ -71,6 +73,19 @@ export default {
       focusIndex: 0,
       placeholder: undefined
     }
+  },
+
+  watch: {
+    focused () {
+      this.$nextTick(() => {
+        this.resizeSuggestionsBox()
+      })
+    },
+    suggestions () {
+      this.$nextTick(() => {
+        this.resizeSuggestionsBox()
+      })
+    },
   },
 
   computed: {
@@ -128,12 +143,13 @@ export default {
     alignRight () {
       const navCount = (this.$site.themeConfig.nav || []).length
       const repo = this.$site.repo ? 1 : 0
-      return navCount + repo <= 2
+      return navCount + repo <= FLEX_SEARCH_UI_ALIGN_RIGHT_FACTOR
     }
   },
 
   mounted () {
     this.placeholder = this.$site.themeConfig.searchPlaceholder || ''
+    window.addEventListener('resize', this.resizeSuggestionsBox)
     document.addEventListener('keydown', this.onHotkey)
 
     this.setUpFlexSearchDocument()
@@ -165,6 +181,12 @@ export default {
         }
 
         this.docs.set(locale, doc)
+      }
+    },
+
+    resizeSuggestionsBox () {
+      if (this.$refs.suggestions) {
+        this.$refs.suggestions.style.maxHeight = (window.innerHeight - 100) + 'px'
       }
     },
 
@@ -243,7 +265,9 @@ export default {
     &:focus
       cursor auto
       border-color $accentColor
+      width 15rem
   .suggestions
+    overflow-y scroll
     background #fff
     width 40rem
     position absolute

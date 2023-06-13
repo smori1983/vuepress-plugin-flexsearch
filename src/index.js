@@ -23,6 +23,7 @@ module.exports = (options, ctx) => {
     excerptTailText = ' ...',
     tokenizerType = 'kuromoji.default',
     ngramSize = 3,
+    uiAlignRightFactor = 10,
   } = options;
 
   /**
@@ -44,6 +45,7 @@ module.exports = (options, ctx) => {
       FLEX_SEARCH_EXCERPT_HEAD_TEXT: excerptHeadText,
       FLEX_SEARCH_EXCERPT_TAIL_TEXT: excerptTailText,
       FLEX_SEARCH_NGRAM_SIZE: ngramSize,
+      FLEX_SEARCH_UI_ALIGN_RIGHT_FACTOR: uiAlignRightFactor,
     },
 
     alias: {
