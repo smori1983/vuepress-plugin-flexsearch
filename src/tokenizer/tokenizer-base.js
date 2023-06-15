@@ -26,7 +26,7 @@ class TokenizerBase {
    * @protected
    */
   _defaultForExcerpt(page) {
-    return page._strippedContent
+    return (page._strippedContent || '')
       .replace(/[\r\n\s]+/g, ' ');
   }
 }

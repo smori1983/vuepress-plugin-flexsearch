@@ -17,7 +17,7 @@ class KuromojiDefault extends TokenizerBase {
     /**
      * @type {KuromojiToken[]}
      */
-    const allTokens = await tokenize(page._strippedContent);
+    const allTokens = await tokenize(page._strippedContent || '');
 
     const tokens = allTokens
       .filter(token => token.pos === '名詞')
