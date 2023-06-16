@@ -70,12 +70,6 @@ module.exports = (options, ctx) => {
       }
 
       for (const page of ctx.pages) {
-        const frontmatter = page._computed.$frontmatter;
-
-        if (frontmatter.search === false) {
-          continue;
-        }
-
         if (searchPathPatterns !== null) {
           if (!searchPathPatterns.some(pattern => pattern.test(page.regularPath))) {
             continue;
