@@ -50,7 +50,7 @@ module.exports = (options, ctx) => {
     },
 
     alias: {
-      '@SearchBox': path.resolve(__dirname, 'components', 'SearchBoxFlexSearchBase.vue'),
+      '@SearchBox': path.resolve(__dirname, 'components', 'SearchBoxFlexSearch.vue'),
     },
 
     enhanceAppFiles: [
