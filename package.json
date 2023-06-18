@@ -21,7 +21,8 @@
     "src/**",
     "README.md",
     "CHANGELOG.md",
-    "LICENSE"
+    "LICENSE",
+    "LICENSE.third_party"
   ],
   "repository": {
     "type": "git",
