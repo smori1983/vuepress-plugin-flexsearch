@@ -58,6 +58,13 @@ module.exports = (options, ctx) => {
     ],
 
     async ready() {
+      // For local dev server.
+      // Skip to run tokenizer if there are too many pages
+      // and so it takes long time to launch.
+      if (process.env.VUEPRESS_FLEXSEARCH === 'disabled') {
+        return;
+      }
+
       /** @type {Map<string, Map<string, Object>>} */
       const localeBasedPageData = new Map([
         ['/', new Map()],
