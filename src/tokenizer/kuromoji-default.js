@@ -9,8 +9,12 @@ const TokenizerBase = require('./tokenizer-base');
 /**
  * Default tokenizer using kuromoji (Japanese morphological analyzer).
  *
- * - tokens: Extract nouns (名詞) only.
- * - excerpt: Use markdown text.
+ * tokens:
+ * - Extract nouns (名詞) only.
+ * - Ignore if token consists of ASCII control characters or symbols only.
+ *
+ * excerpt:
+ * - Use markdown text.
  */
 class KuromojiDefault extends TokenizerBase {
   async create(page) {
@@ -21,6 +25,7 @@ class KuromojiDefault extends TokenizerBase {
 
     const tokens = allTokens
       .filter(token => token.pos === '名詞')
+      .filter(token => /^[\x00-\x2f\x3a-\x40\x5b-\x60\x7b-\x7f]+$/.test(token.surface_form) === false)
       .map(token => token.surface_form);
 
     const excerpt = this._defaultForExcerpt(page);
