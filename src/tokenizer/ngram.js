@@ -6,9 +6,12 @@
 const create = (text, size) => {
   const result = [];
 
-  for (let i = 0, len = text.length; i < len; i++) {
+  let i = 0;
+
+  do {
     result.push(text.slice(i, i + size));
-  }
+    i++;
+  } while (i + size <= text.length);
 
   return result;
 };
