@@ -111,10 +111,7 @@ export default {
 
       const max = this.$site.themeConfig.searchMaxSuggestions || FLEX_SEARCH_MAX_SUGGESTIONS
 
-      const queryForSearch = query
-        .split(/\s+/)
-        .map(word => ngram.create(word, FLEX_SEARCH_NGRAM_SIZE).join(' '))
-        .join(' ')
+      const queryForSearch = ngram.createForSearch(query, FLEX_SEARCH_NGRAM_SIZE).join(' ');
 
       /**
        * @type {string[]}
@@ -130,7 +127,7 @@ export default {
         return {
           title: page.title,
           path: page.path,
-          excerpt: excerpt.create(page.dataForExcerpt, query, {
+          excerpt: excerpt.create(page.dataForExcerpt, queryForSearch, {
             aroundLength: FLEX_SEARCH_EXCERPT_AROUND_LENGTH,
             headText: FLEX_SEARCH_EXCERPT_HEAD_TEXT,
             tailText: FLEX_SEARCH_EXCERPT_TAIL_TEXT,
