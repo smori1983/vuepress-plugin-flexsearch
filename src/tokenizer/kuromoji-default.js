@@ -9,8 +9,11 @@ const TokenizerBase = require('./tokenizer-base');
 /**
  * Default tokenizer using kuromoji (Japanese morphological analyzer).
  *
- * - tokens: Extract nouns (名詞) only.
- * - excerpt: Use markdown text.
+ * tokens:
+ * - Extract nouns (名詞) only.
+ *
+ * excerpt:
+ * - Use markdown text.
  */
 class KuromojiDefault extends TokenizerBase {
   async create(page) {
