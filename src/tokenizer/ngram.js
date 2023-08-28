@@ -8,12 +8,9 @@ const TextProcessing = require('./text-processing');
 const create = (text, size) => {
   const result = [];
 
-  let i = 0;
-
-  do {
+  for (let i = 0, len = text.length; i < len; i++) {
     result.push(text.slice(i, i + size));
-    i++;
-  } while (i + size <= text.length);
+  }
 
   return result;
 };
