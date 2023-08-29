@@ -111,7 +111,8 @@ export default {
 
       const max = this.$site.themeConfig.searchMaxSuggestions || FLEX_SEARCH_MAX_SUGGESTIONS
 
-      const queryForSearch = ngram.createForSearch(query, FLEX_SEARCH_NGRAM_SIZE).join(' ');
+      const queryForSearch = ngram.createForSearch(query, FLEX_SEARCH_NGRAM_SIZE);
+      const queryForExcerpt = ngram.createForExcerpt(query, FLEX_SEARCH_NGRAM_SIZE);
 
       /**
        * @type {string[]}
@@ -127,7 +128,7 @@ export default {
         return {
           title: page.title,
           path: page.path,
-          excerpt: excerpt.create(page.dataForExcerpt, queryForSearch, {
+          excerpt: excerpt.create(page.dataForExcerpt, queryForExcerpt, {
             aroundLength: FLEX_SEARCH_EXCERPT_AROUND_LENGTH,
             headText: FLEX_SEARCH_EXCERPT_HEAD_TEXT,
             tailText: FLEX_SEARCH_EXCERPT_TAIL_TEXT,

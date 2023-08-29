@@ -16,18 +16,42 @@ const create = (text, size) => {
 };
 
 /**
- * @param {string} text
+ * @param {string[]} tokens
  * @param {number} size
- * @return {string[]}
+ * @return {string}
  */
-const createForSearch = (text, size) => {
+const createForTokens = (tokens, size) => {
+  return create(tokens.join(''), size).join(' ');
+};
+
+/**
+ * @param {string} query
+ * @param {number} size
+ * @return {string}
+ */
+const createForSearch = (query, size) => {
+  return query
+    .split(/\s+/)
+    .map(word => create(word, size).join(' '))
+    .join(' ');
+};
+
+/**
+ * @param {string} query
+ * @param {number} size
+ * @return {string}
+ */
+const createForExcerpt = (query, size) => {
   const textProcessing = new TextProcessing();
 
-  textProcessing.add(text);
+  textProcessing.add(query);
 
   return textProcessing.getResult()
-    .map(text => create(text, size).join(' '));
+    .map(text => create(text, size).join(' '))
+    .join(' ');
 };
 
 module.exports.create = create;
+module.exports.createForTokens = createForTokens;
 module.exports.createForSearch = createForSearch;
+module.exports.createForExcerpt = createForExcerpt;
