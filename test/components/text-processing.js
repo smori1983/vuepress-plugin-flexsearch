@@ -2,7 +2,7 @@ const assert = require('assert');
 const describe = require('mocha').describe;
 const it = require('mocha').it;
 
-const TextProcessing = require('../../src/tokenizer/text-processing');
+const TextProcessing = require('../../src/components/text-processing');
 
 describe('tokenizer', () => {
   describe('text-processing', () => {
