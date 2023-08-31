@@ -1,4 +1,5 @@
 const ExcerptHtml = require('./excerpt-html');
+const TextProcessing = require('./text-processing');
 
 /**
  * @typedef {Object} ExcerptOption
@@ -20,12 +21,17 @@ const create = (content, query, option) => {
     tailText = ' ...',
   } = option || {};
 
-  const queries = query
-    .split(/\s+/)
-    .map(q => q.toLowerCase());
+  const contentLowerCase = content.toLowerCase();
+  const queryLowerCase = query.toLowerCase();
+
+  const textProcessing = new TextProcessing();
+
+  textProcessing.add(queryLowerCase);
+
+  const queries = queryLowerCase.split(/\s+/).concat(textProcessing.getResult());
 
   for (let i = 0, len = queries.length; i < len; i++) {
-    const position = content.toLowerCase().indexOf(queries[i]);
+    const position = contentLowerCase.indexOf(queries[i]);
 
     if (position >= 0) {
       const from = Math.max(0, position - aroundLength);

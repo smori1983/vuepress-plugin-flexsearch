@@ -1,5 +1,3 @@
-const TextProcessing = require('./text-processing');
-
 /**
  * @param {string} text
  * @param {number} size
@@ -36,22 +34,6 @@ const createForSearch = (query, size) => {
     .join(' ');
 };
 
-/**
- * @param {string} query
- * @param {number} size
- * @return {string}
- */
-const createForExcerpt = (query, size) => {
-  const textProcessing = new TextProcessing();
-
-  textProcessing.add(query);
-
-  return textProcessing.getResult()
-    .map(text => create(text, size).join(' '))
-    .join(' ');
-};
-
 module.exports.create = create;
 module.exports.createForTokens = createForTokens;
 module.exports.createForSearch = createForSearch;
-module.exports.createForExcerpt = createForExcerpt;
