@@ -1,5 +1,3 @@
-const TextProcessing = require('./text-processing');
-
 /**
  * @param {string} text
  * @param {number} size
@@ -8,29 +6,34 @@ const TextProcessing = require('./text-processing');
 const create = (text, size) => {
   const result = [];
 
-  let i = 0;
-
-  do {
+  for (let i = 0, len = text.length; i < len; i++) {
     result.push(text.slice(i, i + size));
-    i++;
-  } while (i + size <= text.length);
+  }
 
   return result;
 };
 
 /**
- * @param {string} text
+ * @param {string[]} tokens
  * @param {number} size
- * @return {string[]}
+ * @return {string}
  */
-const createForSearch = (text, size) => {
-  const textProcessing = new TextProcessing();
+const createForTokens = (tokens, size) => {
+  return create(tokens.join(''), size).join(' ');
+};
 
-  textProcessing.add(text);
-
-  return textProcessing.getResult()
-    .map(text => create(text, size).join(' '));
+/**
+ * @param {string} query
+ * @param {number} size
+ * @return {string}
+ */
+const createForSearch = (query, size) => {
+  return query
+    .split(/\s+/)
+    .map(word => create(word, size).join(' '))
+    .join(' ');
 };
 
 module.exports.create = create;
+module.exports.createForTokens = createForTokens;
 module.exports.createForSearch = createForSearch;

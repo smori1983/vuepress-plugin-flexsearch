@@ -71,47 +71,46 @@ export default {
       query: '',
       focused: false,
       focusIndex: 0,
-      placeholder: undefined
-    }
+      placeholder: undefined,
+    };
   },
 
   watch: {
     focused () {
       this.$nextTick(() => {
-        this.resizeSuggestionsBox()
-      })
+        this.resizeSuggestionsBox();
+      });
     },
     suggestions () {
       this.$nextTick(() => {
-        this.resizeSuggestionsBox()
-      })
+        this.resizeSuggestionsBox();
+      });
     },
   },
 
   computed: {
     showSuggestions () {
-      return this.focused && this.suggestions.length > 0
+      return this.focused && this.suggestions.length > 0;
     },
 
     /**
      * @return {{title: string, path: string, excerpt: string}[]}
      */
     suggestions () {
-      const query = this.query.trim()
+      const query = this.query.trim();
 
       if (query.length === 0) {
-        return []
+        return [];
       }
 
-      const localePath = this.$localePath
+      const localePath = this.$localePath;
 
       if (!this.docs.has(localePath)) {
-        return []
+        return [];
       }
 
-      const max = this.$site.themeConfig.searchMaxSuggestions || FLEX_SEARCH_MAX_SUGGESTIONS
-
-      const queryForSearch = ngram.createForSearch(query, FLEX_SEARCH_NGRAM_SIZE).join(' ');
+      const queryForSearch = ngram.createForSearch(query, FLEX_SEARCH_NGRAM_SIZE);
+      const max = this.$site.themeConfig.searchMaxSuggestions || FLEX_SEARCH_MAX_SUGGESTIONS;
 
       /**
        * @type {string[]}
@@ -119,41 +118,41 @@ export default {
       const matchedKeys = this.docs.get(localePath).search(queryForSearch, {
         pluck: 'dataForSearch',
         limit: max,
-      })
+      });
 
       return matchedKeys.map((key) => {
-        const page = data[localePath][key]
+        const page = data[localePath][key];
 
         return {
           title: page.title,
           path: page.path,
-          excerpt: excerpt.create(page.dataForExcerpt, queryForSearch, {
+          excerpt: excerpt.create(page.dataForExcerpt, query, {
             aroundLength: FLEX_SEARCH_EXCERPT_AROUND_LENGTH,
             headText: FLEX_SEARCH_EXCERPT_HEAD_TEXT,
             tailText: FLEX_SEARCH_EXCERPT_TAIL_TEXT,
           }),
-        }
-      })
+        };
+      });
     },
 
     // make suggestions align right when there are not enough items
     alignRight () {
-      const navCount = (this.$site.themeConfig.nav || []).length
-      const repo = this.$site.repo ? 1 : 0
-      return navCount + repo <= FLEX_SEARCH_UI_ALIGN_RIGHT_FACTOR
+      const navCount = (this.$site.themeConfig.nav || []).length;
+      const repo = this.$site.repo ? 1 : 0;
+      return navCount + repo <= FLEX_SEARCH_UI_ALIGN_RIGHT_FACTOR;
     }
   },
 
   mounted () {
-    this.placeholder = this.$site.themeConfig.searchPlaceholder || ''
-    window.addEventListener('resize', this.resizeSuggestionsBox)
-    document.addEventListener('keydown', this.onHotkey)
+    this.placeholder = this.$site.themeConfig.searchPlaceholder || '';
+    window.addEventListener('resize', this.resizeSuggestionsBox);
+    document.addEventListener('keydown', this.onHotkey);
 
-    this.setUpFlexSearchDocument()
+    this.setUpFlexSearchDocument();
   },
 
   beforeDestroy () {
-    document.removeEventListener('keydown', this.onHotkey)
+    document.removeEventListener('keydown', this.onHotkey);
   },
 
   methods: {
@@ -165,41 +164,41 @@ export default {
           index: [
             'dataForSearch',
           ],
-        })
+        });
 
         // Consider the case locale defined but no pages created.
-        const localeData = data[locale] || {}
+        const localeData = data[locale] || {};
 
         for (const key in localeData) {
           doc.add({
             key: key,
             dataForSearch: localeData[key].dataForSearch,
-          })
+          });
         }
 
-        this.docs.set(locale, doc)
+        this.docs.set(locale, doc);
       }
     },
 
     resizeSuggestionsBox () {
       if (this.$refs.suggestions) {
-        this.$refs.suggestions.style.maxHeight = (window.innerHeight - 100) + 'px'
+        this.$refs.suggestions.style.maxHeight = (window.innerHeight - 100) + 'px';
       }
     },
 
     onHotkey (event) {
       if (event.srcElement === document.body && FLEX_SEARCH_HOTKEYS.includes(event.key)) {
-        this.$refs.input.focus()
-        event.preventDefault()
+        this.$refs.input.focus();
+        event.preventDefault();
       }
     },
 
     onUp () {
       if (this.showSuggestions) {
         if (this.focusIndex > 0) {
-          this.focusIndex--
+          this.focusIndex--;
         } else {
-          this.focusIndex = this.suggestions.length - 1
+          this.focusIndex = this.suggestions.length - 1;
         }
       }
     },
@@ -207,33 +206,33 @@ export default {
     onDown () {
       if (this.showSuggestions) {
         if (this.focusIndex < this.suggestions.length - 1) {
-          this.focusIndex++
+          this.focusIndex++;
         } else {
-          this.focusIndex = 0
+          this.focusIndex = 0;
         }
       }
     },
 
     go (i) {
       if (!this.showSuggestions) {
-        return
+        return;
       }
 
-      const path = this.suggestions[i].path
+      const path = this.suggestions[i].path;
 
       if (this.$route.path !== path) {
-        this.$router.push(path)
+        this.$router.push(path);
       }
 
-      this.$refs.input.blur()
+      this.$refs.input.blur();
     },
 
     focus (i) {
-      this.focusIndex = i
+      this.focusIndex = i;
     },
 
     unfocus () {
-      this.focusIndex = -1
+      this.focusIndex = -1;
     }
   }
 }
