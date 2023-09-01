@@ -281,13 +281,11 @@ export default {
     cursor pointer
     a
       white-space normal
-      color lighten($textColor, 35%)
+      color $accentColor
       .page-title
         font-weight 600
     &.focused
       background-color #f3f4f5
-      a
-        color $accentColor
     .page-excerpt
       margin 1rem 0 0 1rem
       font-size 90%
