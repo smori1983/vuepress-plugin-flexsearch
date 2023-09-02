@@ -251,7 +251,7 @@ export default {
     display inline-block
     border 1px solid darken($borderColor, 10%)
     border-radius 2rem
-    font-size 0.9rem
+    font-size 16px
     line-height 2rem
     padding 0 0.5rem 0 2rem
     outline none
