@@ -270,6 +270,7 @@ export default {
     top 2 rem
     border 1px solid darken($borderColor, 10%)
     border-radius 6px
+    font-size 16px
     padding 0.4rem
     list-style-type none
     &.align-right
