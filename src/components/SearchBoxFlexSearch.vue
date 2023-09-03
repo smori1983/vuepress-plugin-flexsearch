@@ -251,7 +251,7 @@ export default {
     display inline-block
     border 1px solid darken($borderColor, 10%)
     border-radius 2rem
-    font-size 0.9rem
+    font-size 16px
     line-height 2rem
     padding 0 0.5rem 0 2rem
     outline none
@@ -270,6 +270,7 @@ export default {
     top 2 rem
     border 1px solid darken($borderColor, 10%)
     border-radius 6px
+    font-size 16px
     padding 0.4rem
     list-style-type none
     &.align-right
@@ -281,18 +282,19 @@ export default {
     cursor pointer
     a
       white-space normal
-      color lighten($textColor, 35%)
+      color $accentColor
       .page-title
         font-weight 600
     &.focused
       background-color #f3f4f5
-      a
-        color $accentColor
     .page-excerpt
       margin 1rem 0 0 1rem
+      color lighten($textColor, 25%)
       font-size 90%
       white-space normal
       word-break break-all
+      strong
+        color $textColor
 
 @media (max-width: $MQNarrow)
   .search-box
