@@ -289,9 +289,12 @@ export default {
       background-color #f3f4f5
     .page-excerpt
       margin 1rem 0 0 1rem
+      color lighten($textColor, 25%)
       font-size 90%
       white-space normal
       word-break break-all
+      strong
+        color $textColor
 
 @media (max-width: $MQNarrow)
   .search-box
