@@ -26,3 +26,22 @@ module.exports = {
 
 };
 ```
+
+
+## Dev server launch option
+
+If env variable `VUEPRESS_FLEXSEARCH` is defined as `disabled`, the plugin does not create search data on `ready()` callback.
+
+It will be helpful if there are too many pages and so it takes long time to launch.
+
+Example:
+
+```json
+{
+  "scripts": {
+    "dev": "vuepress dev docs",
+    "dev:light": "VUEPRESS_FLEXSEARCH=disabled vuepress dev docs",
+    "build": "vuepress build docs"
+  }
+}
+```
