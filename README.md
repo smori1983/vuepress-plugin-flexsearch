@@ -1,6 +1,9 @@
 # vuepress-plugin-flexsearch
 
 
+[Demo site](https://smori1983.github.io/vuepress-plugin-flexsearch-demo/)
+
+
 ## Overview
 
 VuePress plugin for [FlexSearch](https://www.npmjs.com/package/flexsearch).
