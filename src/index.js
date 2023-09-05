@@ -19,12 +19,12 @@ module.exports = (options, ctx) => {
     searchHotKeys = ['s', '/'],
     searchMaxSuggestions = 20,
     searchPaths = null,
+    uiAlignRightFactor = 10,
     excerptAroundLength = 100,
     excerptHeadText = '... ',
     excerptTailText = ' ...',
     tokenizerType = 'kuromoji.default',
     ngramSize = 3,
-    uiAlignRightFactor = 10,
   } = options;
 
   /**
@@ -42,11 +42,11 @@ module.exports = (options, ctx) => {
     define: {
       FLEX_SEARCH_HOTKEYS: searchHotKeys,
       FLEX_SEARCH_MAX_SUGGESTIONS: searchMaxSuggestions,
+      FLEX_SEARCH_UI_ALIGN_RIGHT_FACTOR: uiAlignRightFactor,
       FLEX_SEARCH_EXCERPT_AROUND_LENGTH: excerptAroundLength,
       FLEX_SEARCH_EXCERPT_HEAD_TEXT: excerptHeadText,
       FLEX_SEARCH_EXCERPT_TAIL_TEXT: excerptTailText,
       FLEX_SEARCH_NGRAM_SIZE: ngramSize,
-      FLEX_SEARCH_UI_ALIGN_RIGHT_FACTOR: uiAlignRightFactor,
     },
 
     alias: {
