@@ -15,12 +15,12 @@ module.exports = {
       //searchHotKeys: ['s', '/'],
       //searchMaxSuggestions: 20,
       //searchPaths: null,
+      //uiAlignRightFactor: 10,
       //excerptAroundLength: 100,
       //excerptHeadText: '... ',
       //excerptTailText: ' ...',
       //tokenizerType: 'kuromoji.default',
       //ngramSize: 3,
-      //uiAlignRightFactor: 10,
     }],
   ],
 
@@ -49,6 +49,13 @@ The maximum number of results for search.
 - Default: `null`
 
 Configure if you want to limit the searchable paths.
+
+### uiAlignRightFactor
+
+- Type: `number`
+- Default: `10`
+
+Condition to add class attribute of `align-light` to suggestions area, which will be added when the number of navbar menus is less than `uiAlignRightFactor`.
 
 ### excerptAroundLength
 
@@ -80,13 +87,6 @@ Define text which is shown for abbreviation if succeeding text is longer than `e
 
 - Type: `number`
 - Default: `3`
-
-### uiAlignRightFactor
-
-- Type: `number`
-- Default: `10`
-
-Condition to add class attribute of `align-light` to suggestions area, which will be added when the number of navbar menus is less than `uiAlignRightFactor`.
 
 
 ## Dev server launch option
