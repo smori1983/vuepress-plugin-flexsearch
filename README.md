@@ -1,6 +1,19 @@
 # vuepress-plugin-flexsearch
 
-VuePress plugin for FlexSearch.
+
+## Overview
+
+VuePress plugin for [FlexSearch](https://www.npmjs.com/package/flexsearch).
+
+To integrate VuePress and FlexSearch, firstly I have learned the basics from below packages:
+
+- [vuepress-plugin-fulltext-search](https://www.npmjs.com/package/vuepress-plugin-fulltext-search)
+- [vuepress-plugin-flexsearch](https://www.npmjs.com/package/vuepress-plugin-flexsearch)
+- [vuepress-plugin-flexsearch-pro](https://www.npmjs.com/package/vuepress-plugin-flexsearch-pro)
+
+Unlike these packages, to focus on search for Japanese, this plugin is using [kuromoji](https://www.npmjs.com/package/kuromoji) (Japanese morphological analyzer) via [kuromojin](https://www.npmjs.com/package/kuromojin).
+
+Search data is created after applying n-gram to texts extracted by kuromoji. And so search query is also preprocessed by n-gram.
 
 
 ## Config
