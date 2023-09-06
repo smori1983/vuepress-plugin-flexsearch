@@ -43,7 +43,7 @@ const create = (content, query, option) => {
     }
   }
 
-  return '';
+  return content.slice(0, aroundLength) + (content.length > aroundLength ? tailText : '');
 };
 
 /**
