@@ -122,3 +122,15 @@ Example:
   }
 }
 ```
+
+For Windows, you can configure with [cross-env](https://www.npmjs.com/package/cross-env):
+
+```json
+{
+  "scripts": {
+    "dev": "vuepress dev docs",
+    "dev:light": "cross-env VUEPRESS_FLEXSEARCH=disabled vuepress dev docs",
+    "build": "vuepress build docs"
+  }
+}
+```
