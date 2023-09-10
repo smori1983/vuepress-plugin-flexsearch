@@ -1,7 +1,7 @@
 {
   "name": "@smori1983/vuepress-plugin-flexsearch",
   "version": "1.0.0",
-  "description": "VuePress plugin for FlexSearch.",
+  "description": "VuePress plugin for FlexSearch using Japanese morphological analyzer (kuromoji).",
   "main": "src/index.js",
   "scripts": {
     "test": "mocha test/**"
