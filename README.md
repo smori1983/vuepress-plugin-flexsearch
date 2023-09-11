@@ -3,6 +3,8 @@
 
 [Demo site](https://smori1983.github.io/vuepress-plugin-flexsearch-demo/)
 
+[CHANGELOG](https://github.com/smori1983/vuepress-plugin-flexsearch/blob/master/CHANGELOG.md)
+
 
 ## Overview
 
