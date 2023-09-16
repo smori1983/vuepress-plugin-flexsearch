@@ -51,6 +51,7 @@
 import { Document } from 'flexsearch'
 import data from '@dynamic/vuepress-plugin-flexsearch/data'
 import excerpt from './excerpt'
+import matcher from './matcher';
 import ngram from '../tokenizer/ngram'
 
 /* global FLEX_SEARCH_HOTKEYS */
@@ -130,6 +131,7 @@ export default {
             aroundLength: FLEX_SEARCH_EXCERPT_AROUND_LENGTH,
             headText: FLEX_SEARCH_EXCERPT_HEAD_TEXT,
             tailText: FLEX_SEARCH_EXCERPT_TAIL_TEXT,
+            matcher: matcher,
           }),
         };
       });
@@ -159,6 +161,7 @@ export default {
     setUpFlexSearchDocument () {
       for (const locale in data) {
         const doc = new Document({
+          matcher: matcher,
           tokenize: 'forward',
           id: 'key',
           index: [
