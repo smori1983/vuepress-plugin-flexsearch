@@ -131,7 +131,6 @@ export default {
             aroundLength: FLEX_SEARCH_EXCERPT_AROUND_LENGTH,
             headText: FLEX_SEARCH_EXCERPT_HEAD_TEXT,
             tailText: FLEX_SEARCH_EXCERPT_TAIL_TEXT,
-            matcher: matcher,
           }),
         };
       });
