@@ -51,6 +51,7 @@
 import { Document } from 'flexsearch'
 import data from '@dynamic/vuepress-plugin-flexsearch/data'
 import excerpt from './excerpt'
+import matcher from './matcher';
 import ngram from '../tokenizer/ngram'
 
 /* global FLEX_SEARCH_HOTKEYS */
@@ -159,6 +160,7 @@ export default {
     setUpFlexSearchDocument () {
       for (const locale in data) {
         const doc = new Document({
+          matcher: matcher,
           tokenize: 'forward',
           id: 'key',
           index: [

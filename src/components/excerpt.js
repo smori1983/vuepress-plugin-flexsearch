@@ -1,11 +1,13 @@
 const ExcerptHtml = require('./excerpt-html');
 const TextProcessing = require('./text-processing');
 
+const matcher = require('./matcher');
+
 /**
  * @typedef {Object} ExcerptOption
  * @property {number} [aroundLength]
- * @property {string} [head]
- * @property {string} [tail]
+ * @property {string} [headText]
+ * @property {string} [tailText]
  */
 
 /**
@@ -22,7 +24,7 @@ const create = (content, query, option) => {
   } = option || {};
 
   const contentLowerCase = content.toLowerCase();
-  const queryLowerCase = query.toLowerCase();
+  const queryLowerCase = addMatcher(query).toLowerCase();
 
   const textProcessing = new TextProcessing();
 
@@ -44,6 +46,22 @@ const create = (content, query, option) => {
   }
 
   return content.slice(0, aroundLength) + (content.length > aroundLength ? tailText : '');
+};
+
+/**
+ * @param {string} query
+ * @return {string}
+ */
+const addMatcher = (query) => {
+  let converted1 = query;
+  let converted2 = query;
+
+  Object.keys(matcher).forEach((key) => {
+    converted1 = converted1.replaceAll(key, matcher[key]);
+    converted2 = converted2.replaceAll(matcher[key], key);
+  })
+
+  return [query, converted1, converted2].join(' ');
 };
 
 /**
