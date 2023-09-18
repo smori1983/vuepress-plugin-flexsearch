@@ -84,6 +84,25 @@ describe('components', () => {
         'weigh ...',
       ],
 
+      // matcher
+      [
+        '2023',
+        {},
+        '２０２３年',
+        '<strong>２０２３</strong>年',
+      ],
+      [
+        '２０２３',
+        {},
+        '2023年',
+        '<strong>2023</strong>年',
+      ],
+      [
+        'いぬ ねこ',
+        {},
+        'イヌとネコ',
+        '<strong>イヌ</strong>と<strong>ネコ</strong>',
+      ],
     ];
 
     dataSet.forEach(([query, option, content, highlighted]) => {
