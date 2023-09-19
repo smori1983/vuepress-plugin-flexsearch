@@ -50,8 +50,8 @@
 <script>
 import { Document } from 'flexsearch'
 import data from '@dynamic/vuepress-plugin-flexsearch/data'
+import Database from './database';
 import excerpt from './excerpt'
-import matcher from './matcher';
 import ngram from '../tokenizer/ngram'
 
 /* global FLEX_SEARCH_HOTKEYS */
@@ -66,8 +66,7 @@ export default {
 
   data () {
     return {
-      /** @type {Map<string, Document>} */
-      docs: new Map(),
+      database: new Database(),
 
       query: '',
       focused: false,
@@ -105,21 +104,10 @@ export default {
       }
 
       const localePath = this.$localePath;
-
-      if (!this.docs.has(localePath)) {
-        return [];
-      }
-
       const queryForSearch = ngram.createForSearch(query, FLEX_SEARCH_NGRAM_SIZE);
       const max = this.$site.themeConfig.searchMaxSuggestions || FLEX_SEARCH_MAX_SUGGESTIONS;
 
-      /**
-       * @type {string[]}
-       */
-      const matchedKeys = this.docs.get(localePath).search(queryForSearch, {
-        pluck: 'dataForSearch',
-        limit: max,
-      });
+      const matchedKeys = this.database.search(localePath, queryForSearch, max);
 
       return matchedKeys.map((key) => {
         const page = data[localePath][key];
@@ -149,7 +137,10 @@ export default {
     window.addEventListener('resize', this.resizeSuggestionsBox);
     document.addEventListener('keydown', this.onHotkey);
 
-    this.setUpFlexSearchDocument();
+    for (const locale in data) {
+      // Consider the case locale defined but no pages created.
+      this.database.add(locale, data[locale] || {});
+    }
   },
 
   beforeDestroy () {
@@ -157,31 +148,6 @@ export default {
   },
 
   methods: {
-    setUpFlexSearchDocument () {
-      for (const locale in data) {
-        const doc = new Document({
-          matcher: matcher,
-          tokenize: 'forward',
-          id: 'key',
-          index: [
-            'dataForSearch',
-          ],
-        });
-
-        // Consider the case locale defined but no pages created.
-        const localeData = data[locale] || {};
-
-        for (const key in localeData) {
-          doc.add({
-            key: key,
-            dataForSearch: localeData[key].dataForSearch,
-          });
-        }
-
-        this.docs.set(locale, doc);
-      }
-    },
-
     resizeSuggestionsBox () {
       if (this.$refs.suggestions) {
         this.$refs.suggestions.style.maxHeight = (window.innerHeight - 100) + 'px';
