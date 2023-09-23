@@ -1,6 +1,13 @@
 # CHANGELOG
 
 
+## 1.2.0
+
+### Features
+
+- Matcher for Japanese characters ([#30](https://github.com/smori1983/vuepress-plugin-flexsearch/pull/30))
+
+
 ## 1.1.0
 
 ### Features
