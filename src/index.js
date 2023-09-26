@@ -7,8 +7,6 @@ const path = require('path');
 const tokenizer = require('./tokenizer');
 const TokenizerBase = require('./tokenizer/tokenizer-base');
 
-const flexSearchData = {};
-
 /**
  * @param {Object} options
  * @param {Context} ctx
@@ -37,6 +35,8 @@ module.exports = (options, ctx) => {
       return Array.isArray(paths) ? paths : new Array(paths);
     }
   })(searchPaths);
+
+  const flexSearchData = {};
 
   return {
     define: {
