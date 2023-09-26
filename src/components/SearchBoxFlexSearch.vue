@@ -48,7 +48,6 @@
 </template>
 
 <script>
-import { Document } from 'flexsearch'
 import data from '@dynamic/vuepress-plugin-flexsearch/data'
 import Database from './database';
 import excerpt from './excerpt'
