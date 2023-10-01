@@ -44,14 +44,19 @@ import ngram from '../tokenizer/ngram';
 export default {
   name: 'PluginFlexSearchForm',
 
+  props: {
+    queryParam: {
+      type: String,
+      default: 'q',
+    },
+  },
+
   data () {
     return {
       database: new Database(),
 
       query: '',
       searchResult: [],
-
-      queryParam: 'q',
     };
   },
 
