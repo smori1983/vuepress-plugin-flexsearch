@@ -1,7 +1,7 @@
 <template>
   <div>
     <form
-      @submit.prevent="search"
+      @submit.prevent="submit"
       class="search-form"
     >
       <input
@@ -60,32 +60,37 @@ export default {
     }
 
     this.query = this.$router.currentRoute.query.q || '';
-    this.search();
+    this.updateSearchResult();
   },
 
   watch: {
     $route (to, from) {
       this.query = to.query.q || '';
-      this.search();
+      this.updateSearchResult();
     },
   },
 
   methods: {
-    search () {
-      const query = this.query.trim();
-
-      if (query.length === 0) {
-        this.searchResult = [];
-      }
-
-      const currentParam = this.$router.currentRoute.query.q || '';
-      if (currentParam !== query) {
+    submit () {
+      const queryParam = this.$router.currentRoute.query.q || '';
+      const query = this.query;
+      if (queryParam !== query) {
         this.$router.push({
           path: this.$router.currentRoute.path,
           query: {
             q: query,
           },
         });
+      }
+    },
+    updateSearchResult () {
+      this.searchResult = this.search();
+    },
+    search () {
+      const query = this.query.trim();
+
+      if (query.length === 0) {
+        return [];
       }
 
       const localePath = this.$localePath;
@@ -94,7 +99,7 @@ export default {
 
       const matchedKeys = this.database.search(localePath, queryForSearch, max);
 
-      this.searchResult = matchedKeys.map((key) => {
+      return matchedKeys.map((key) => {
         const page = data[localePath][key];
 
         return {
