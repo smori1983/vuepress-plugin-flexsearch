@@ -50,6 +50,8 @@ export default {
 
       query: '',
       searchResult: [],
+
+      queryParam: 'q',
     };
   },
 
@@ -59,26 +61,26 @@ export default {
       this.database.add(locale, data[locale] || {});
     }
 
-    this.query = this.$router.currentRoute.query.q || '';
+    this.query = this.$router.currentRoute.query[this.queryParam] || '';
     this.updateSearchResult();
   },
 
   watch: {
     $route (to, from) {
-      this.query = to.query.q || '';
+      this.query = to.query[this.queryParam] || '';
       this.updateSearchResult();
     },
   },
 
   methods: {
     submit () {
-      const queryParam = this.$router.currentRoute.query.q || '';
+      const queryParam = this.$router.currentRoute.query[this.queryParam] || '';
       const query = this.query;
       if (queryParam !== query) {
         this.$router.push({
           path: this.$router.currentRoute.path,
           query: {
-            q: query,
+            [this.queryParam]: query,
           },
         });
       }
