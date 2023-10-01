@@ -131,7 +131,7 @@ export default {
     width calc(100% - 3rem)
     height: 2rem
     color lighten($textColor, 25%)
-    border 1px solid $accentColor
+    border 1px solid darken($borderColor, 10%)
     border-radius 2rem
     font-size 16px
     line-height 2rem
@@ -139,6 +139,8 @@ export default {
     outline none
     background #fff url(search.svg) 0.6rem 0.5rem no-repeat
     background-size 1rem
+    &:focus
+      border-color $accentColor
 .suggestions
   border 1px solid darken($borderColor, 10%)
   font-size 16px
