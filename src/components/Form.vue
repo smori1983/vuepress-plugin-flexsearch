@@ -31,18 +31,14 @@
 </template>
 
 <script>
-import data from '@dynamic/vuepress-plugin-flexsearch/data';
-import Database from './database';
-import excerpt from './excerpt';
-import ngram from '../tokenizer/ngram';
+import databaseMixin from './database-mixin';
 
-/* global FLEX_SEARCH_MAX_SUGGESTIONS */
-/* global FLEX_SEARCH_EXCERPT_AROUND_LENGTH */
-/* global FLEX_SEARCH_EXCERPT_HEAD_TEXT */
-/* global FLEX_SEARCH_EXCERPT_TAIL_TEXT */
-/* global FLEX_SEARCH_NGRAM_SIZE */
 export default {
   name: 'PluginFlexSearchForm',
+
+  mixins: [
+    databaseMixin,
+  ],
 
   props: {
     queryParam: {
@@ -53,27 +49,22 @@ export default {
 
   data () {
     return {
-      database: new Database(),
-
       query: '',
       searchResult: [],
     };
   },
 
   mounted() {
-    for (const locale in data) {
-      // Consider the case locale defined but no pages created.
-      this.database.add(locale, data[locale] || {});
-    }
+    this.databaseInit();
 
     this.query = this.$router.currentRoute.query[this.queryParam] || '';
-    this.updateSearchResult();
+    this.searchResult = this.databaseSearch(this.query);
   },
 
   watch: {
     $route (to, from) {
       this.query = to.query[this.queryParam] || '';
-      this.updateSearchResult();
+      this.searchResult = this.databaseSearch(this.query);
     },
   },
 
@@ -89,36 +80,6 @@ export default {
           },
         });
       }
-    },
-    updateSearchResult () {
-      this.searchResult = this.search();
-    },
-    search () {
-      const query = this.query.trim();
-
-      if (query.length === 0) {
-        return [];
-      }
-
-      const localePath = this.$localePath;
-      const queryForSearch = ngram.createForSearch(query, FLEX_SEARCH_NGRAM_SIZE);
-      const max = this.$site.themeConfig.searchMaxSuggestions || FLEX_SEARCH_MAX_SUGGESTIONS;
-
-      const matchedKeys = this.database.search(localePath, queryForSearch, max);
-
-      return matchedKeys.map((key) => {
-        const page = data[localePath][key];
-
-        return {
-          title: page.title,
-          path: page.path,
-          excerpt: excerpt.create(page.dataForExcerpt, query, {
-            aroundLength: FLEX_SEARCH_EXCERPT_AROUND_LENGTH,
-            headText: FLEX_SEARCH_EXCERPT_HEAD_TEXT,
-            tailText: FLEX_SEARCH_EXCERPT_TAIL_TEXT,
-          }),
-        };
-      });
     },
   }
 };
