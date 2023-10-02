@@ -74,6 +74,7 @@ export default {
         this.resizeSuggestionsBox();
       });
     },
+
     suggestions () {
       this.$nextTick(() => {
         this.resizeSuggestionsBox();
@@ -98,7 +99,7 @@ export default {
       const navCount = (this.$site.themeConfig.nav || []).length;
       const repo = this.$site.repo ? 1 : 0;
       return navCount + repo <= FLEX_SEARCH_UI_ALIGN_RIGHT_FACTOR;
-    }
+    },
   },
 
   mounted () {
@@ -167,9 +168,9 @@ export default {
 
     unfocus () {
       this.focusIndex = -1;
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="stylus">

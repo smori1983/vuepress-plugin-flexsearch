@@ -72,6 +72,7 @@ export default {
     submit () {
       const queryParam = this.$router.currentRoute.query[this.queryParam] || '';
       const query = this.query;
+
       if (queryParam !== query) {
         this.$router.push({
           path: this.$router.currentRoute.path,
@@ -81,7 +82,7 @@ export default {
         });
       }
     },
-  }
+  },
 };
 </script>
 
