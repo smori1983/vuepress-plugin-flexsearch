@@ -1,6 +1,13 @@
 # CHANGELOG
 
 
+## 1.3.0
+
+### Features
+
+- Form.vue to create search page ([#33](https://github.com/smori1983/vuepress-plugin-flexsearch/pull/33))
+
+
 ## 1.2.0
 
 ### Features
