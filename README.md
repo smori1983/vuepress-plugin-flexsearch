@@ -107,6 +107,21 @@ Define text which is shown for abbreviation if succeeding text is longer than `e
 - Default: `3`
 
 
+## Predefined components
+
+### `PluginFlexSearchForm`
+
+Provides search form you can set up on arbitrary markdown file.
+
+Usage example:
+
+```md
+# Search
+
+<PluginFlexSearchForm/>
+```
+
+
 ## Dev server launch option
 
 If env variable `VUEPRESS_FLEXSEARCH` is defined as `disabled`, the plugin does not create search data on `ready()` callback.
