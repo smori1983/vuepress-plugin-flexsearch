@@ -6,7 +6,7 @@
 import data from '@dynamic/vuepress-plugin-flexsearch/data';
 
 export default {
-  data() {
+  data () {
     return {
       searchData: data,
     };

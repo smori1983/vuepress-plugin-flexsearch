@@ -54,7 +54,7 @@ export default {
     };
   },
 
-  mounted() {
+  mounted () {
     this.databaseInit();
 
     this.query = this.$router.currentRoute.query[this.queryParam] || '';
