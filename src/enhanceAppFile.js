@@ -1,4 +1,4 @@
-import Debug from './components/Debug';
+import Debug from './components/Debug.vue';
 import Form from './components/Form.vue';
 
 export default ({ Vue }) => {
