@@ -1,7 +1,9 @@
 import data from '@dynamic/vuepress-plugin-flexsearch/data';
+import dictionary from '@dynamic/vuepress-plugin-flexsearch/dictionary';
 
 import Database from './database';
 import excerpt from './excerpt';
+import dictionaryFactory from '../dictionary/factory';
 import ngram from '../tokenizer/ngram';
 
 /* global FLEX_SEARCH_MAX_SUGGESTIONS */
@@ -13,6 +15,8 @@ export default {
   data () {
     return {
       database: new Database(),
+
+      dictionaryManager: dictionaryFactory.createFromClientDynamicModule(dictionary),
     };
   },
 
@@ -29,11 +33,15 @@ export default {
      * @return {{title: string, path: string, excerpt: string}[]}
      */
     databaseSearch(queryRow) {
-      const query = queryRow.trim();
+      const queryRowTrimmed = queryRow.trim();
 
-      if (query.length === 0) {
+      if (queryRowTrimmed.length === 0) {
         return [];
       }
+
+      const dictionaryWords = this.dictionaryManager.matchingWords(queryRowTrimmed);
+
+      const query = [queryRowTrimmed].concat(dictionaryWords).join(' ');
 
       const localePath = this.$localePath;
       const queryForSearch = ngram.createForSearch(query, FLEX_SEARCH_NGRAM_SIZE);
