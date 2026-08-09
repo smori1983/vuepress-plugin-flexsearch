@@ -13,10 +13,10 @@
   },
   "devDependencies": {
     "http-server": "^14.1.1",
-    "mocha": "^10.2.0",
-    "vuepress": "^1.9.9",
+    "mocha": "^11.8.0",
+    "vuepress": "^1.9.10",
     "vuepress-types": "^0.9.4",
-    "yargs": "^17.7.2"
+    "yargs": "^18.1.0"
   },
   "files": [
     "src/**",
