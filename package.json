@@ -15,8 +15,7 @@
     "http-server": "^14.1.1",
     "mocha": "^11.8.0",
     "vuepress": "^1.9.10",
-    "vuepress-types": "^0.9.4",
-    "yargs": "^18.1.0"
+    "vuepress-types": "^0.9.4"
   },
   "files": [
     "src/**",
