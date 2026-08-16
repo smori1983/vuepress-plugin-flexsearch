@@ -1,18 +1,17 @@
 const { tokenize } = require('kuromojin');
 
-const yargs = require('yargs/yargs');
-const { hideBin } = require('yargs/helpers');
+async function main() {
+  const { program } = await import('commander');
 
-yargs(hideBin(process.argv))
-  .command('kuromoji <input>', 'invoke kuromoji', (yargs) => {
-    return yargs
-      .positional('input', {
-        describe: 'The text to analyze',
-        type: 'string',
-      });
-  }, async (argv) => {
-    const tokens = await tokenize(argv.input);
+  program.command('kuromoji')
+    .description('invoke kuromoji')
+    .argument('<input>', 'The text to analyze')
+    .action(async (input) => {
+      const tokens = await tokenize(input);
+      console.log(tokens);
+    });
 
-    console.log(tokens);
-  })
-  .parse();
+  program.parse();
+}
+
+main().then();
