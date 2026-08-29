@@ -4,6 +4,7 @@
  */
 
 const path = require('path');
+const dictionaryFactory = require('./dictionary/factory');
 const tokenizer = require('./tokenizer');
 const TokenizerBase = require('./tokenizer/tokenizer-base');
 
@@ -23,6 +24,8 @@ module.exports = (options, ctx) => {
     excerptTailText = ' ...',
     tokenizerType = 'kuromoji.default',
     ngramSize = 3,
+    /** @type {string[][]} */
+    dictionarySet = [],
   } = options;
 
   /**
@@ -37,6 +40,7 @@ module.exports = (options, ctx) => {
   })(searchPaths);
 
   const flexSearchData = {};
+  const dictionaryManager = dictionaryFactory.createFromDictionarySet(dictionarySet);
 
   return {
     define: {
@@ -89,7 +93,8 @@ module.exports = (options, ctx) => {
         }
 
         const pageData = await tokenizer.use(tokenizerType, page, {
-          ngramSize: ngramSize,
+          ngramSize,
+          dictionaryManager,
         });
 
         localeBasedPageData.get(localePath).set(page.key, {
@@ -114,6 +119,10 @@ module.exports = (options, ctx) => {
         {
           name: 'vuepress-plugin-flexsearch/data.js',
           content: `export default ${JSON.stringify(flexSearchData, null, 2)}`,
+        },
+        {
+          name: 'vuepress-plugin-flexsearch/dictionary.js',
+          content: `export default ${JSON.stringify(dictionaryManager.toData(), null, 2)}`,
         },
       ];
     },
